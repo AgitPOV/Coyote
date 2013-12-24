@@ -1,0 +1,11 @@
+Makefile.inc
+============================
+DEFINES += -DUSB_CFG_DMINUS_BIT=4 -DJUMPER_BIT=3
+
+F_CPU = 12000000
+DEVICE = atmega168
+
+PROGRAMMER =  -c avrisp2 -P usb 
+
+#original FUSEOPT_88              = -U lfuse:w:0xd7:m -U hfuse:w:0xd4:m -U efuse:w:0xf8:m
+FUSEOPT_168              = -U lfuse:w:0xf7:m -U hfuse:w:0xd6:m -U efuse:w:0x00:m

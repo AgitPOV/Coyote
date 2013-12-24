@@ -1,0 +1,7 @@
+Top Copper (GTL)
+Top Soldermask (GTS)
+Top Silkscreen (GTO)
+Bottom Copper (GBL)
+Bottom Soldermask (GBS)
+Bottom Silkscreen (GBO)
+Drill File (TXT) 2:4 leading
