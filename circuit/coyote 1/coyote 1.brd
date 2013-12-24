@@ -8,8 +8,8 @@
 </settings>
 <grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.0025" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="no" active="yes"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
 <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
@@ -109,8 +109,8 @@
 <wire x1="29.972" y1="0" x2="29.972" y2="74.93" width="0" layer="20"/>
 <wire x1="29.972" y1="74.93" x2="0" y2="74.93" width="0" layer="20"/>
 <wire x1="0" y1="74.93" x2="0" y2="0" width="0" layer="20"/>
-<text x="17.7165" y="54.4195" size="1.27" layer="16" font="vector" rot="MR270">agit pinky 2</text>
-<text x="17.399" y="5.207" size="1.27" layer="1" font="vector" rot="R90">agit pinky 2</text>
+<text x="17.7165" y="54.4195" size="1.27" layer="16" font="vector" rot="MR270">Coyote 1</text>
+<text x="17.399" y="5.207" size="1.27" layer="1" font="vector" rot="R90">Coyote 1</text>
 <text x="1.524" y="69.469" size="1.778" layer="23">-</text>
 <text x="7.239" y="72.263" size="1.778" layer="23" rot="R270">+</text>
 <rectangle x1="49.53" y1="77.5335" x2="78.3336" y2="91.0971" layer="116"/>
