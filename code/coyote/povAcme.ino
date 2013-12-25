@@ -76,8 +76,8 @@ void povDisplay() {
   for (int i = _povArraySize-1; i>=0; i--)
   {
 
-    //int b = _povArray[i];
-    int b = pgm_read_word_near(_povArray + i);
+    int b = _povArray[i];
+    //int b = pgm_read_word_near(_povArray + i);
     
     for (int k=0; k<12; k++) digitalWrite(ledPins[k], bitRead(~b,k)); 
     #ifdef COYOTE_SLOW_DEBUG

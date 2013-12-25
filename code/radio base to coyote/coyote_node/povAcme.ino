@@ -79,8 +79,8 @@ void povDisplay() {
     int b = _povArray[i];
 
     for (int k=0; k<12; k++) digitalWrite(ledPins[k], bitRead(~b,k));
-    //delay(100);
-    delayMicroseconds(povIntervalColumns); //delayMicroseconds(POV_US_BETWEEN_COLUMNS);
+    delay(50);
+    //delayMicroseconds(povIntervalColumns); //delayMicroseconds(POV_US_BETWEEN_COLUMNS);
 
   }
   for (int k=0; k<12; k++) digitalWrite(ledPins[k], 1);

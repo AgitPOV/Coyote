@@ -104,17 +104,19 @@ void keyPressed() {
     }
   } 
   else if ( key == 'c' || key == 'C' ) {
-    copyToClipboard();
+    copyToClipboard4Controller();
+  } else if ( key == 'd' || key == 'D' ) {
+    copyToClipboard4Dataflow();
   }
 }
 
 
-void copyToClipboard() {
+void copyToClipboard4Controller() {
   /*
   prog_int16_t povArray[] PROGMEM
   
   */
-  String code = "#define POVARRAYSIZE "+cols+"\rprog_int16_t povArray[] PROGMEM= { "; 
+  String code = "#define POVARRAYSIZE "+cols+"\rint povArray[] = { "; 
   for ( int c =0 ; c <  cols ; c++ ) {
     int compresssedRow = 0;
     for ( int r =0 ; r < rows ; r++) {
@@ -125,6 +127,21 @@ void copyToClipboard() {
     if ( c != cols - 1 ) code = code + " , ";
   }
   code = code + "};\r";
+  clipboard.copyString(code);
+  
+}
+
+void copyToClipboard4Dataflow() {
+   String code = ""; 
+  for ( int c =0 ; c <  cols ; c++ ) {
+    int compresssedRow = 0;
+    for ( int r =0 ; r < rows ; r++) {
+      compresssedRow = compresssedRow << 1;
+      compresssedRow = compresssedRow | (squares[r*cols+c] == 0 ? 0 : 1) ;
+    }
+    code = code + compresssedRow ;
+    if ( c != cols - 1 ) code = code + " ";
+  }
   clipboard.copyString(code);
   
 }
