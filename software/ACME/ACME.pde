@@ -110,7 +110,11 @@ void keyPressed() {
 
 
 void copyToClipboard() {
-  String code = "#define POVARRAYSIZE "+cols+"\rint povArray[] = { "; 
+  /*
+  prog_int16_t povArray[] PROGMEM
+  
+  */
+  String code = "#define POVARRAYSIZE "+cols+"\rprog_int16_t povArray[] PROGMEM= { "; 
   for ( int c =0 ; c <  cols ; c++ ) {
     int compresssedRow = 0;
     for ( int r =0 ; r < rows ; r++) {

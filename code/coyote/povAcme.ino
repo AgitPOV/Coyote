@@ -76,11 +76,15 @@ void povDisplay() {
   for (int i = _povArraySize-1; i>=0; i--)
   {
 
-    int b = _povArray[i];
-
-    for (int k=0; k<12; k++) digitalWrite(ledPins[k], bitRead(~b,k));
-    //delay(100);
-    delayMicroseconds(povIntervalColumns); //delayMicroseconds(POV_US_BETWEEN_COLUMNS);
+    //int b = _povArray[i];
+    int b = pgm_read_word_near(_povArray + i);
+    
+    for (int k=0; k<12; k++) digitalWrite(ledPins[k], bitRead(~b,k)); 
+    #ifdef COYOTE_SLOW_DEBUG
+      delay(100);
+    #else
+      delayMicroseconds(povIntervalColumns); //delayMicroseconds(POV_US_BETWEEN_COLUMNS);
+    #endif
 
   }
   for (int k=0; k<12; k++) digitalWrite(ledPins[k], 1);
