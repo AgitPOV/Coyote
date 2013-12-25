@@ -4,6 +4,8 @@
 #include <SPI.h>
 #include "printf.h"
 
+#include <AStream.h>
+
 /*
     Node 00 is the base node.
     Nodes 01-05 are nodes whose parent is the base.
@@ -18,16 +20,22 @@ RF24 radio(9,10);
 // Network uses that radio
 RF24Network network(radio);
 
-
-uint8_t dataSize;
-uint8_t dataIndex;
+// data 0 : radio id 
+// data 1 : offset 0-15
+// data 2 : totalLength 1-208
+// data 3...15 : LED data by groups of 13 because it is a divider of 208 and 208 is the max length
 int data[16];
 
+// Warning this might change
+AStream intStream = AStream(data,13,sizeof(int));
+
+// Structure of our payload
+// Max 32 bytes
 struct payload_t
 {
-  uint8_t size;
-  uint8_t type;
-  int array[15];
+  uint8_t offset; // 0-15
+  uint8_t totalLength; // 1-208
+  int array[13]; // 13 because it is a divider of 208 and 208 is the max length
 };
   
 
@@ -55,24 +63,32 @@ void loop() {
   network.update();
 
  
-  while ( intStreamAvailable() ) { 
+  while ( intStream.available()  ) { 
 
-    Serial.print("Sending... ");
-     for ( byte b = 0; b < intStreamLength(); b++ ) {
-      Serial.print(intStreamPeek(b));
+    
+    
+     payload_t payload;
+     byte length = intStream.length();
+     payload.offset = data[1];
+     payload.totalLength = data[2];
+     for ( byte i = 3; i < length;i++) {
+       payload.array[i-3] = data[i];
+     }
+     
+     Serial.print("Radioing: ");
+     Serial.println(data[0]);
+     Serial.print("Offset: ");
+     Serial.print(payload.offset);
+     Serial.print(" TotalLength: ");
+     Serial.println(payload.totalLength);
+     Serial.print("Data: ");
+     for ( byte b = 0; b < 13; b++ ) {
+      Serial.print(payload.array[b]);
       Serial.print(" ");
     }
     Serial.println();
-    
-     payload_t payload;
-     payload.size = intStreamLength();
-     payload.type = 0;
      
-     for ( uint8_t i = 0; i < 15;i++) {
-       payload.array[i] = intStreamPeek(i+1);
-     }
-     
-     RF24NetworkHeader header(/*to node*/ intStreamPeek(0));
+     RF24NetworkHeader header(/*to node*/ data[0]);
       bool ok = network.write(header,&payload,sizeof(payload));
        if (ok)
       Serial.println("ok.");

@@ -4,10 +4,6 @@
 #include <SPI.h>
 #include "printf.h"
 
-
-// Set a node ID (other than 0) that is different for each node
-#define NODE_ID 1
-
 // Set up nRF24L01 radio on SPI bus plus pins 5 & 6 (CE, CSN) 
 RF24 radio(5,6);
 
@@ -18,12 +14,10 @@ RF24Network network(radio);
 // Max 32 bytes
 struct payload_t
 {
-  uint8_t size;
-  uint8_t type;
-  int array[15];
+  uint8_t offset; // 0-15
+  uint8_t totalLength; // 1-208
+  int array[13]; // 13 because it is a divider of 208 and 208 is the max length
 };
-
-int radioPovArray[15];
 
 
 void setupRadio() {
@@ -52,7 +46,13 @@ void loopRadio() {
     RF24NetworkHeader header;
     payload_t payload;
     network.read(header,&payload,sizeof(payload));
-   
+    
+    for ( byte i =0 ; i < 13; i++ ){
+       povArray[i+payload.offset] = payload.array[i];
+    }
+     
+    povSetArray(povArray,payload.totalLength);
+   /*
    if ( payload.type == 0 ) {
      // Copy one to the other
      for ( byte i =0 ; i < payload.size; i++ ){
@@ -61,10 +61,7 @@ void loopRadio() {
      
      povSetArray(radioPovArray,payload.size);
    }
-    
-  
-   
-  }
-
+   */
+  }  
   
 }
