@@ -26,6 +26,10 @@ void mousePressed() {
   editor.mousePressed();
 }
 
+void mouseDragged() {
+  editor.mouseDragged();
+}
+
 void mouseReleased() {
   editor.mouseReleased();
 }

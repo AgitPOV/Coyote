@@ -23,25 +23,18 @@ class PixmapEditor {
     textAlign(CENTER, CENTER);
     background(130, 101, 1);
 
-    if (mousePressed) {
-      checkMouse();
-    }
-    else {
-      previousSquare = -1;
-    }
-
     // Grid
     stroke(0);
     for (int i = 0;i < (cols) ;i++) {
-      line(i*colSize+border, border, i*colSize+border, height-border-1);
+      line(i*colSize+border, border, i*colSize+border, editorHeight-border-1);
     }
     for (int i = 0;i < (rows) ;i++) {
-      line(border, i*rowSize+border, width-border-1, i*rowSize+border);
+      line(border, i*rowSize+border, editorWidth-border-1, i*rowSize+border);
     }
 
     // Last line of grid
-    line(width-1-border, border, width-1-border, height-border-1);
-    line(border, height-1-border, width-1-border, height-1-border);
+    line(editorWidth-1-border, border, editorWidth-1-border, editorHeight-border-1);
+    line(border, editorHeight-1-border, editorWidth-1-border, editorHeight-1-border);
 
     // Text
     fill(255);
@@ -62,6 +55,10 @@ class PixmapEditor {
   void mousePressed() {
     previousSquare = -1;
     checkMouse();
+  }
+  
+  void mouseDragged() {
+    checkMouse();   
   }
 
   void mouseReleased() {
