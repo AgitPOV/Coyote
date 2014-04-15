@@ -78,14 +78,3 @@ void copyToClipboard4Dataflow() {
 }
 
 
-/*
-
- 12 * 7
- 
- prog_uint16_t PROGMEM POV_FONT [][7] =
- {
- {
- 0x000, 0x000, 0x000, 0x000, 0x000, 0x000, 0x000  }
- 
- 
- */
