@@ -1,22 +1,17 @@
 int cols = 49;
 int rows = 12;
 
-
 ClipHelper clipboard = new ClipHelper();
 
 Pixmap pixmap = new Pixmap(cols, rows);
 PixmapEditor editor;
 
 void setup() {
-
   size(640, 256);
-
-
   frameRate(20);
-  editor = new PixmapEditor(width, height, pixmap);
-  
-}
 
+  editor = new PixmapEditor(width, height, pixmap);  
+}
 
 void draw() {
   editor.display();
