@@ -3,7 +3,6 @@ int rows = 12;
 float colSize;
 float rowSize;
 float border = 20;
-int squares[] = new int[rows*cols];
 
 int previousSquare = -1;
 
@@ -11,6 +10,8 @@ int previousSquare = -1;
 int penMode = -1;
 
 ClipHelper clipboard = new ClipHelper();
+
+Pixmap pixmap = new Pixmap(cols, rows);
 
 void setup() {
 
@@ -20,7 +21,7 @@ void setup() {
   frameRate(20);
   colSize = (width-border*2-1) / float(cols);
   rowSize = (height-border*2-1) / float(rows);
-
+  
   textAlign(CENTER, CENTER);
 }
 
@@ -60,7 +61,7 @@ void draw() {
   fill(233, 217, 184);
   for (int r = 0; r < rows; r++) {
     for (int c = 0; c < cols; c++) {
-      if (squares[r*cols+c] == 1) {
+      if (pixmap.get(c, r) == Pixmap.ON) {
         rect(c*colSize+border, r*rowSize+border, colSize, rowSize);
       }
     }
@@ -86,9 +87,9 @@ void checkMouse() {
     //println(index);
     if (index != previousSquare ) {
       if ( penMode == -1 ) {
-        penMode = squares[index] == 1 ? 0 : 1;
+        penMode = (pixmap.get(index) == Pixmap.ON ? Pixmap.OFF : Pixmap.ON);
       }
-      squares[index] = penMode;
+      pixmap.set(index, penMode);
       previousSquare = index;
     }
   }
@@ -98,9 +99,8 @@ void checkMouse() {
 
 void keyPressed() {
   if ( keyCode == BACKSPACE || keyCode == DELETE ) {
-    for (int i =0; i < squares.length; i++) {
-
-      squares[i]= 0;
+    for (int i =0; i < pixmap.nPixels(); i++) {
+      pixmap.set(i, Pixmap.OFF);
     }
   } 
   else if ( key == 'c' || key == 'C' ) {
@@ -122,7 +122,7 @@ void copyToClipboard4Controller() {
     int compresssedRow = 0;
     for ( int r =0 ; r < rows ; r++) {
       compresssedRow = compresssedRow << 1;
-      compresssedRow = compresssedRow | (squares[r*cols+c] == 0 ? 0 : 1) ;
+      compresssedRow = compresssedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
     }
     code = code + compresssedRow ;
     if ( c != cols - 1 ) code = code + " , ";
@@ -137,7 +137,7 @@ void copyToClipboard4Dataflow() {
     int compresssedRow = 0;
     for ( int r =0 ; r < rows ; r++) {
       compresssedRow = compresssedRow << 1;
-      compresssedRow = compresssedRow | (squares[r*cols+c] == 0 ? 0 : 1) ;
+      compresssedRow = compresssedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
     }
     code = code + compresssedRow ;
     if ( c != cols - 1 ) code = code + " ";
