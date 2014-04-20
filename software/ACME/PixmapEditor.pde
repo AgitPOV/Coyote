@@ -1,4 +1,6 @@
 class PixmapEditor {
+  int editorX;
+  int editorY;
   int editorWidth;
   int editorHeight;
   Pixmap pixmap;
@@ -10,7 +12,9 @@ class PixmapEditor {
   int previousSquare = -1;
   int penMode = -1;
 
-  PixmapEditor(int w, int h, Pixmap pixmap) {
+  PixmapEditor(int x, int y, int w, int h, Pixmap pixmap) {
+    editorX = x;
+    editorY = y;
     editorWidth = w;
     editorHeight = h;
     this.pixmap = pixmap;
@@ -25,11 +29,14 @@ class PixmapEditor {
 
     // Grid
     stroke(0);
-    for (int i = 0;i < (cols) ;i++) {
-      line(i*colSize+border, border, i*colSize+border, editorHeight-border-1);
+        
+    for (int i = 0; i < cols; i++) {
+      float x = editorX + i*colSize + border;
+      line(x, editorY + border, x, editorY + editorHeight-border-1);
     }
-    for (int i = 0;i < (rows) ;i++) {
-      line(border, i*rowSize+border, editorWidth-border-1, i*rowSize+border);
+    for (int i = 0; i < rows; i++) {
+      float y = editorY + i*rowSize + border;
+      line(editorX + border, y, editorX + editorWidth-border-1, y);
     }
 
     // Last line of grid

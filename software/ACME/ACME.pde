@@ -10,7 +10,7 @@ void setup() {
   size(640, 256);
   frameRate(20);
 
-  editor = new PixmapEditor(width, height, pixmap);  
+  editor = new PixmapEditor(0, 0, width, height, pixmap);  
 }
 
 void draw() {
