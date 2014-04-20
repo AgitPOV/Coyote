@@ -60,8 +60,9 @@ class Pixmap {
       for (int ys=0; ys<submap.nRows(); ys++) {
         int xc = x+xs;
         int yc = y+ys;
-        if (0 <= xc && xc < nColumns() && 0 <= yc && yc < nRows())
-          set(x+xs, y+ys, submap.get(xs, ys));
+        if (0 <= xc && xc < nColumns() && 0 <= yc && yc < nRows()) {
+          set(xc, yc, submap.get(xs, ys));
+        }
       }
     }
   }
