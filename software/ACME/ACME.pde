@@ -12,7 +12,8 @@ void setup() {
   frameRate(20);
 
   editor = new PixmapEditor(0, 0, width, height, pixmap);  
-  tool = new PenTool(editor);
+//  tool = new PenTool(editor);
+  tool = new TextTool(editor, "29LTArapix-12.vlw");
 }
 
 void draw() {
