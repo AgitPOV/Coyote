@@ -51,7 +51,16 @@ class Pixmap {
     toggle(_indexOf(x, y));
   }
   
+  
   int _indexOf(int x, int y) {
     return y*nColumns + x;
+  }
+  
+  int column(int index) {
+    return index % nColumns;
+  }
+  
+  int row(int index) {
+    return index / nRows;
   }
 }
