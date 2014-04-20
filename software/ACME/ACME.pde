@@ -37,6 +37,10 @@ void mouseReleased() {
   tool.mouseReleased();
 }
 
+void keyTyped() {
+  tool.keyTyped();
+}
+
 void keyPressed() {
   tool.keyPressed();
   if ( keyCode == BACKSPACE || keyCode == DELETE ) {

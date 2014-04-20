@@ -38,7 +38,18 @@ class TextTool extends PixmapTool {
     setCursor(editor.getPixmap().column(idx));
   }
 
-  void keyPressed() {
+  void keyTyped() {
+    if (cursorStartColumn != DEFAULT && key != CODED) {
+      // Append letter to string.
+      text += key;
+      cursorIndex++;
+      // Create pixmap.
+      textPixmap = new Pixmap(stringToImage(text, N_ROWS, font, ltr));
+      // Stamp typed letter.
+      editor.getPixmap().stamp(ltr ? cursorStartColumn : cursorStartColumn - textPixmap.nColumns() + 1, 0, textPixmap);
+      // Move cursor.
+      // cursorStartColumn += (ltr ? +1 : -1) * pix.nColumns();
+    }
   }
 
   PImage stringToImage(String text, int fontSize, PFont font, boolean ltr) {

@@ -40,6 +40,7 @@ abstract class PixmapTool {
       mouseMovedAt(idx);
   }
 
+  void keyTyped() {}
   void keyPressed() {}
   void keyReleased() {}
   
