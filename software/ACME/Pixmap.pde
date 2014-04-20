@@ -51,6 +51,17 @@ class Pixmap {
     toggle(_indexOf(x, y));
   }
   
+  /// Inserts pixmap at position (x, y).
+  void stamp(int x, int y, Pixmap submap) {
+    for (int xs=0; xs<submap.nColumns(); xs++) {
+      for (int ys=0; ys<submap.nRows(); ys++) {
+        int xc = x+xs;
+        int yc = y+ys;
+        if (0 <= xc && xc < nColumns() && 0 <= yc && yc < nRows())
+          set(x+xs, y+ys, submap.get(xs, ys));
+      }
+    }
+  }
   
   int _indexOf(int x, int y) {
     return y*nColumns + x;
