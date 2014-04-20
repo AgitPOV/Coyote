@@ -21,6 +21,8 @@ class Pixmap {
     this.nColumns = nColumns;
     this.nRows    = nRows;
     pixels = new int[nColumns * nRows];
+    for (int i=0; i<nPixels(); i++)
+      pixels[i] = OFF;
   }
   
   int nColumns() { return nColumns; }
