@@ -523,11 +523,11 @@ LOAD c:/program files (x86)/atmel/avr tools/avr toolchain/bin/../lib/gcc/avr/4.7
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xdaa
+.debug_info     0x00000000      0xdc0
  *(.debug_info)
- .debug_info    0x00000000       0x8b usbdrv/usbdrvasm.o
- .debug_info    0x0000008b       0x8e usbdrv/oddebug.o
- .debug_info    0x00000119      0xc91 main.o
+ .debug_info    0x00000000       0xa1 usbdrv/usbdrvasm.o
+ .debug_info    0x000000a1       0x8e usbdrv/oddebug.o
+ .debug_info    0x0000012f      0xc91 main.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev   0x00000000      0x396
@@ -546,12 +546,12 @@ LOAD c:/program files (x86)/atmel/avr tools/avr toolchain/bin/../lib/gcc/avr/4.7
  *(.debug_frame)
  .debug_frame   0x00000000       0x54 main.o
 
-.debug_str      0x00000000     0xb3c8
+.debug_str      0x00000000     0xb3de
  *(.debug_str)
- .debug_str     0x00000000     0x6b0a usbdrv/oddebug.o
-                               0x6bdf (size before relaxing)
- .debug_str     0x00006b0a     0x48be main.o
-                               0xb5ea (size before relaxing)
+ .debug_str     0x00000000     0x6b20 usbdrv/oddebug.o
+                               0x6bf5 (size before relaxing)
+ .debug_str     0x00006b20     0x48be main.o
+                               0xb600 (size before relaxing)
 
 .debug_loc      0x00000000      0x7f3
  *(.debug_loc)
