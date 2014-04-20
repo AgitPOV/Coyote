@@ -13,8 +13,9 @@ class Pixmap {
     img.filter(THRESHOLD);
     img.loadPixels();
     pixels = new int[nColumns * nRows];
-    for (int i=0; i<nPixels(); i++)
-      pixels[i] = ( img.pixels[i] == 0 ? ON : OFF );
+    for (int i=0; i<nPixels(); i++) {
+      pixels[i] = ( img.pixels[i] == color(0) ? OFF : ON );
+    }
   }
   
   Pixmap(int nColumns, int nRows) {
