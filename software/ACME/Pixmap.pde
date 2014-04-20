@@ -7,6 +7,16 @@ class Pixmap {
   static final int ON  = 1;
   static final int OFF = 0;
   
+  Pixmap(PImage img) {
+    nColumns = img.width;
+    nRows    = img.height;
+    img.filter(THRESHOLD);
+    img.loadPixels();
+    pixels = new int[nColumns * nRows];
+    for (int i=0; i<nPixels(); i++)
+      pixels[i] = ( img.pixels[i] == 0 ? ON : OFF );
+  }
+  
   Pixmap(int nColumns, int nRows) {
     this.nColumns = nColumns;
     this.nRows    = nRows;
