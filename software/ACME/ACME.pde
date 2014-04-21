@@ -87,7 +87,15 @@ void setup() {
     fontDropdownList.addItem(fontNames.get(i), i);
   }
 
+  // Add export buttons.
+  cp5.addButton("exportToArduino")
+     .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*3, CONTROL_TOP)
+     .setLabel("-> Arduino")     ;
   
+  cp5.addButton("exportToPureData")
+     .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*3, CONTROL_TOP + BUTTON_SIZE)
+     .setLabel("-> PureData")     ;
+
   // Assign default tool.
   toolButtons.activate(0);
   fontDropdownList.setIndex(0);
@@ -112,6 +120,40 @@ void chooseTool(int id) {
 
 void toggleLTR(boolean ltr) {
   textTool.setLTR(ltr);
+}
+
+
+void exportToArduino() {
+  /*
+  prog_int16_t povArray[] PROGMEM
+   
+   */
+  String code = "#define POVARRAYSIZE "+N_COLUMNS+"\rint povArray[] = { "; 
+  for ( int c =0 ; c <  N_COLUMNS ; c++ ) {
+    int compresssedRow = 0;
+    for ( int r =0 ; r < N_ROWS ; r++) {
+      compresssedRow = compresssedRow << 1;
+      compresssedRow = compresssedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
+    }
+    code = code + compresssedRow ;
+    if ( c != N_COLUMNS - 1 ) code = code + " , ";
+  }
+  code = code + "};\r";
+  clipboard.copyString(code);
+}
+
+void exportToPureData() {
+  String code = ""; 
+  for ( int c =0 ; c <  N_COLUMNS ; c++ ) {
+    int compresssedRow = 0;
+    for ( int r =0 ; r < N_ROWS ; r++) {
+      compresssedRow = compresssedRow << 1;
+      compresssedRow = compresssedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
+    }
+    code = code + compresssedRow ;
+    if ( c != N_COLUMNS - 1 ) code = code + " ";
+  }
+  clipboard.copyString(code);
 }
 
 void controlEvent(ControlEvent event) {
@@ -149,12 +191,6 @@ void keyPressed() {
       pixmap.set(i, Pixmap.OFF);
     }
   } 
-  else if ( key == 'c' || key == 'C' ) {
-    copyToClipboard4Controller();
-  } 
-  else if ( key == 'd' || key == 'D' ) {
-    copyToClipboard4Dataflow();
-  }
 }
 
 void keyReleased() {
@@ -164,39 +200,6 @@ void keyReleased() {
 void addFont(String name, PFont font) {
   fonts.put(name, font);
   fontNames.add(name);
-}
-
-void copyToClipboard4Controller() {
-  /*
-  prog_int16_t povArray[] PROGMEM
-   
-   */
-  String code = "#define POVARRAYSIZE "+N_COLUMNS+"\rint povArray[] = { "; 
-  for ( int c =0 ; c <  N_COLUMNS ; c++ ) {
-    int compresssedRow = 0;
-    for ( int r =0 ; r < N_ROWS ; r++) {
-      compresssedRow = compresssedRow << 1;
-      compresssedRow = compresssedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
-    }
-    code = code + compresssedRow ;
-    if ( c != N_COLUMNS - 1 ) code = code + " , ";
-  }
-  code = code + "};\r";
-  clipboard.copyString(code);
-}
-
-void copyToClipboard4Dataflow() {
-  String code = ""; 
-  for ( int c =0 ; c <  N_COLUMNS ; c++ ) {
-    int compresssedRow = 0;
-    for ( int r =0 ; r < N_ROWS ; r++) {
-      compresssedRow = compresssedRow << 1;
-      compresssedRow = compresssedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
-    }
-    code = code + compresssedRow ;
-    if ( c != N_COLUMNS - 1 ) code = code + " ";
-  }
-  clipboard.copyString(code);
 }
 
 
