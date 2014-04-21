@@ -43,7 +43,7 @@ void keyTyped() {
 
 void keyPressed() {
   tool.keyPressed();
-  if ( keyCode == BACKSPACE || keyCode == DELETE ) {
+  if ( keyCode == DELETE ) {
     for (int i =0; i < pixmap.nPixels(); i++) {
       pixmap.set(i, Pixmap.OFF);
     }
