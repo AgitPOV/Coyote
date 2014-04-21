@@ -79,8 +79,8 @@ class TextTool extends PixmapTool {
         }
       }
       else {
-        // Append letter to string.
-        text += key;
+        // Insert letter in string.
+        text = text.substring(0, cursorIndex) + key + text.substring(cursorIndex);
         cursorIndex++;
         // Stamp text.
         textPixmap = _pixmapFromText(text);
