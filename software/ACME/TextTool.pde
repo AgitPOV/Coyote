@@ -93,7 +93,7 @@ class TextTool extends PixmapTool {
   }
 
   PImage stringToImage(String text, int fontSize, PFont font, boolean ltr) {
-    if (text == "" || text.length() == 0)
+    if (text.isEmpty())
       return null;
     
     println(":"+text+":");
@@ -154,7 +154,7 @@ class TextTool extends PixmapTool {
   }
   
   Pixmap _pixmapFromText(String text) {
-    if (text == "" || text.length() == 0)
+    if (text.isEmpty())
       return null;
       
     // Create pixmap.
