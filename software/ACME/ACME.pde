@@ -46,6 +46,16 @@ void setup() {
 
   editor = new PixmapEditor((width-EDITOR_WIDTH)/2, EDITOR_PADDING, EDITOR_WIDTH, EDITOR_HEIGHT, pixmap);
 
+  fonts = new HashMap<String,PFont>();
+  fontNames = new ArrayList<String>();
+  addFont("Arial",    createFont("Arial", FONT_SIZE));
+  addFont("Arapix",   loadFont("29LTArapix-12.vlw"));
+
+  // Create tools.
+  penTool = new PenTool(editor);
+  textTool = new TextTool(editor, fonts.get(fontNames.get(0)));
+
+  // Controllers.
   toolButtons = cp5.addRadioButton("chooseTool")
                    .setPosition(EDITOR_PADDING, CONTROL_TOP)
                    .setSize(BUTTON_SIZE, BUTTON_SIZE)
@@ -57,14 +67,17 @@ void setup() {
                    .addItem("pen",  TOOL_PEN)
                    .addItem("text", TOOL_TEXT)
                    ;
-
+  // Toggle for LTR/RTL.
+  cp5.addToggle("toggleLTR")
+     .setPosition(EDITOR_PADDING + 5*BUTTON_SIZE, CONTROL_TOP)
+     .setSize(BUTTON_SIZE, BUTTON_SIZE/2)
+     .setValue(true)
+     .setMode(ControlP5.SWITCH)
+     ;
+  
   // Drop-down list for fonts.
-  fonts = new HashMap<String,PFont>();
-  fontNames = new ArrayList<String>();
-  addFont("Arial",    createFont("Arial", FONT_SIZE));
-  addFont("Arapix",   loadFont("29LTArapix-12.vlw"));
   fontDropdownList = cp5.addDropdownList("chooseFont")
-                        .setPosition(EDITOR_PADDING, CONTROL_TOP + BUTTON_SIZE + EDITOR_PADDING)
+                        .setPosition(EDITOR_PADDING + 5*BUTTON_SIZE, CONTROL_TOP + 2*BUTTON_SIZE)
                         .setItemHeight(BUTTON_SIZE/2)
                         .setBarHeight(BUTTON_SIZE/2)
                         ;
@@ -74,18 +87,6 @@ void setup() {
     fontDropdownList.addItem(fontNames.get(i), i);
   }
 
-  // Toggle for LTR/RTL.
-  cp5.addToggle("toggleLTR")
-     .setPosition(EDITOR_PADDING, CONTROL_TOP + 2*BUTTON_SIZE + EDITOR_PADDING)
-     .setSize(BUTTON_SIZE, BUTTON_SIZE/2)
-     .setValue(true)
-     .setMode(ControlP5.SWITCH)
-     ;
-  
-  println(PFont.list());
-  // Create tools.
-  penTool = new PenTool(editor);
-  textTool = new TextTool(editor, fonts.get(fontNames.get(0)));
   
   // Assign default tool.
   toolButtons.activate(0);
