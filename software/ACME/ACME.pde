@@ -64,8 +64,8 @@ void setup() {
                    .setColorLabel(color(255))
                    .setItemsPerRow(2)
                    .setSpacingColumn(50)
-                   .addItem("pen",  TOOL_PEN)
                    .addItem("text", TOOL_TEXT)
+                   .addItem("pen",  TOOL_PEN)
                    ;
   // Toggle for LTR/RTL.
   cp5.addToggle("toggleLTR")
@@ -91,7 +91,7 @@ void setup() {
   // Assign default tool.
   toolButtons.activate(0);
   fontDropdownList.setIndex(0);
-  tool = penTool;
+  tool = textTool;
 }
 
 void draw() {
