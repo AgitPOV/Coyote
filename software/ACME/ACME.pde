@@ -8,7 +8,7 @@ static final int N_ROWS    = 12;
 static final int FONT_SIZE = N_ROWS;
 
 static final int WINDOW_WIDTH  = 800;
-static final int WINDOW_HEIGHT = 600;
+static final int WINDOW_HEIGHT = 400;
 
 //static final int EDITOR_BORDER = 20;
 static final int EDITOR_WIDTH   = 600;
@@ -39,13 +39,14 @@ HashMap<String,PFont> fonts;
 ArrayList<String> fontNames;
 
 void setup() {
+  // Initialize sketch.
   size(WINDOW_WIDTH, WINDOW_HEIGHT);
   frameRate(20);
   
-  cp5 =  new ControlP5(this);
-
+  // Editor.
   editor = new PixmapEditor((width-EDITOR_WIDTH)/2, EDITOR_PADDING, EDITOR_WIDTH, EDITOR_HEIGHT, pixmap);
 
+  // Fonts.
   fonts = new HashMap<String,PFont>();
   fontNames = new ArrayList<String>();
   addFont("Arial",    createFont("Arial", FONT_SIZE));
@@ -56,6 +57,9 @@ void setup() {
   textTool = new TextTool(editor, fonts.get(fontNames.get(0)));
 
   // Controllers.
+  cp5 =  new ControlP5(this);
+  
+  // Tools.
   toolButtons = cp5.addRadioButton("chooseTool")
                    .setPosition(EDITOR_PADDING, CONTROL_TOP)
                    .setSize(BUTTON_SIZE, BUTTON_SIZE)
@@ -67,6 +71,7 @@ void setup() {
                    .addItem("text", TOOL_TEXT)
                    .addItem("pen",  TOOL_PEN)
                    ;
+  
   // Toggle for LTR/RTL.
   cp5.addToggle("toggleLTR")
      .setPosition(EDITOR_PADDING + 5*BUTTON_SIZE, CONTROL_TOP)
