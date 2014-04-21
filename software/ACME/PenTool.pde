@@ -8,6 +8,17 @@ class PenTool extends PixmapTool {
     previousSquare = penMode = DEFAULT;
   }
   
+  void display() {
+    int idx = editor.mouseOver();
+    if (idx != PixmapEditor.OUT_OF_BOUNDS) {
+      fill(color(255, 0, 0, 128));
+      int column = editor.getPixmap().column(idx);
+      int row = editor.getPixmap().row(idx);
+      
+      rect(editor.columnToX(column), editor.rowToY(row), editor.getColumnSize(), editor.getRowSize());
+    }
+  }
+  
   void mousePressedAt(int idx) {
     previousSquare = DEFAULT;
     checkMouse(idx);
