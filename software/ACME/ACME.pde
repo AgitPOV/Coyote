@@ -3,15 +3,15 @@ import java.util.Map;
 
 static final int BACKGROUND = #777CAF;
 
-static final int N_COLUMNS = 49;
+static final int N_COLUMNS = 200;
 static final int N_ROWS    = 12;
 static final int FONT_SIZE = N_ROWS;
 
-static final int WINDOW_WIDTH  = 800;
+static final int WINDOW_WIDTH  = 1024;
 static final int WINDOW_HEIGHT = 400;
 
 //static final int EDITOR_BORDER = 20;
-static final int EDITOR_WIDTH   = 600;
+static final int EDITOR_WIDTH   = 1000;
 static final int EDITOR_HEIGHT  = EDITOR_WIDTH*N_ROWS/N_COLUMNS;
 static final int EDITOR_PADDING = 50;
 static final int CONTROL_TOP    = 2*EDITOR_PADDING+EDITOR_HEIGHT;
