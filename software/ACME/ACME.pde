@@ -78,6 +78,7 @@ void setup() {
      .setSize(BUTTON_SIZE, BUTTON_SIZE/2)
      .setValue(true)
      .setMode(ControlP5.SWITCH)
+     .setLabel("LTR   |   RTL")
      ;
   
   // Drop-down list for fonts.
