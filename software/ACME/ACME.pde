@@ -1,5 +1,17 @@
+
+static final int BACKGROUND = #777CAF;
+
 static final int N_COLUMNS = 49;
 static final int N_ROWS    = 12;
+
+static final int WINDOW_WIDTH  = 800;
+static final int WINDOW_HEIGHT = 600;
+
+//static final int EDITOR_BORDER = 20;
+static final int EDITOR_WIDTH   = 600;
+static final int EDITOR_HEIGHT  = EDITOR_WIDTH*N_ROWS/N_COLUMNS;
+static final int EDITOR_PADDING = 50;
+static final int CONTROL_TOP    = 2*EDITOR_PADDING+EDITOR_HEIGHT;
 
 ClipHelper clipboard = new ClipHelper();
 
@@ -8,17 +20,19 @@ PixmapEditor editor;
 PixmapTool tool;
 
 void setup() {
-  size(640, 256);
+  size(WINDOW_WIDTH, WINDOW_HEIGHT);
   frameRate(20);
+  
+  cp5 =  new ControlP5(this);
 
-  editor = new PixmapEditor(0, 0, width, height, pixmap);  
-//  tool = new PenTool(editor);
-  tool = new TextTool(editor, "29LTArapix-12.vlw");
+  editor = new PixmapEditor((width-EDITOR_WIDTH)/2, EDITOR_PADDING, EDITOR_WIDTH, EDITOR_HEIGHT, pixmap);
 }
 
 void draw() {
+  background(BACKGROUND);
   editor.display();
   tool.display();
+  textTool.setLTR(true);
 }
 
 void mousePressed() {
