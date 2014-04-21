@@ -1,9 +1,11 @@
 import controlP5.*;
+import java.util.Map;
 
 static final int BACKGROUND = #777CAF;
 
 static final int N_COLUMNS = 49;
 static final int N_ROWS    = 12;
+static final int FONT_SIZE = N_ROWS;
 
 static final int WINDOW_WIDTH  = 800;
 static final int WINDOW_HEIGHT = 600;
@@ -31,6 +33,10 @@ TextTool textTool;
 
 ControlP5 cp5;
 RadioButton toolButtons;
+DropdownList fontDropdownList;
+
+HashMap<String,PFont> fonts;
+ArrayList<String> fontNames;
 
 void setup() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -52,12 +58,30 @@ void setup() {
                    .addItem("text", TOOL_TEXT)
                    ;
 
+  // Drop-down list for fonts.
+  fonts = new HashMap<String,PFont>();
+  fontNames = new ArrayList<String>();
+  addFont("Arial",    createFont("Arial", FONT_SIZE));
+  addFont("Arapix",   loadFont("29LTArapix-12.vlw"));
+  fontDropdownList = cp5.addDropdownList("chooseFont")
+                        .setPosition(EDITOR_PADDING, CONTROL_TOP + BUTTON_SIZE + EDITOR_PADDING)
+                        .setItemHeight(BUTTON_SIZE/2)
+                        .setBarHeight(BUTTON_SIZE/2)
+                        ;
+  fontDropdownList.captionLabel().style().marginTop    = 5;
+  fontDropdownList.captionLabel().style().marginBottom = 5;
+  for (int i=0; i<fontNames.size(); i++) {
+    fontDropdownList.addItem(fontNames.get(i), i);
+  }
+
+  println(PFont.list());
   // Create tools.
   penTool = new PenTool(editor);
-  textTool = new TextTool(editor, "29LTArapix-12.vlw");
+  textTool = new TextTool(editor, fonts.get(fontNames.get(0)));
   
   // Assign default tool.
   toolButtons.activate(0);
+  fontDropdownList.setIndex(0);
   tool = penTool;
 }
 
@@ -65,7 +89,6 @@ void draw() {
   background(BACKGROUND);
   editor.display();
   tool.display();
-  textTool.setLTR(true);
 }
 
 void chooseTool(int id) {
@@ -74,10 +97,15 @@ void chooseTool(int id) {
   }
   else if (id == TOOL_TEXT) {
     tool = textTool;
-    textTool.reset();    
+    textTool.reset();
   }
 }
 
+void controlEvent(ControlEvent event) {
+  if (event.getGroup() == fontDropdownList) {
+    textTool.setFont( fonts.get( fontNames.get( (int) event.getGroup().getValue() ) ) );
+  }
+}
 
 void mousePressed() {
   tool.mousePressed();
@@ -116,6 +144,11 @@ void keyPressed() {
 
 void keyReleased() {
   tool.keyReleased();
+}
+
+void addFont(String name, PFont font) {
+  fonts.put(name, font);
+  fontNames.add(name);
 }
 
 void copyToClipboard4Controller() {

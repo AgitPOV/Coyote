@@ -16,19 +16,21 @@ class TextTool extends PixmapTool {
   String text;
   Pixmap textPixmap;
 
-  TextTool(PixmapEditor editor, String fontName) {
+  TextTool(PixmapEditor editor, PFont font) {
     super(editor);
-    setFont(fontName);
+    setFont(font);
     setLTR(true);
     reset();
   }
 
-  void setFont(String fontName) {
-    font = loadFont(fontName);
+  void setFont(PFont font) {
+    this.font = font;
+    reset();
   }
 
   void setLTR(boolean ltr) {
     this.ltr = ltr;
+    reset();
   }
 
   void display() {
@@ -135,7 +137,7 @@ class TextTool extends PixmapTool {
 
     int substringLength = (ltr ? cursorIndex : text.length() - cursorIndex);
     if (substringLength > 0) {
-      Pixmap pix = new Pixmap(stringToImage(text.substring(0, substringLength), N_ROWS, font, ltr));
+      Pixmap pix = new Pixmap(stringToImage(text.substring(0, substringLength), FONT_SIZE, font, ltr));
       column += (ltr ? +1 : -1) * pix.nColumns();
     }
 
@@ -165,7 +167,7 @@ class TextTool extends PixmapTool {
       return null;
 
     // Create pixmap.
-    return new Pixmap(stringToImage(text, N_ROWS, font, ltr));
+    return new Pixmap(stringToImage(text, FONT_SIZE, font, ltr));
   }
 
   void _stamp(Pixmap pix) {
