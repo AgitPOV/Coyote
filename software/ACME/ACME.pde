@@ -1,3 +1,4 @@
+import controlP5.*;
 
 static final int BACKGROUND = #777CAF;
 
@@ -13,11 +14,23 @@ static final int EDITOR_HEIGHT  = EDITOR_WIDTH*N_ROWS/N_COLUMNS;
 static final int EDITOR_PADDING = 50;
 static final int CONTROL_TOP    = 2*EDITOR_PADDING+EDITOR_HEIGHT;
 
+static final int BUTTON_SIZE    = 40;
+
+static final int TOOL_PEN  = 1;
+static final int TOOL_TEXT = 2;
+
 ClipHelper clipboard = new ClipHelper();
 
 Pixmap pixmap = new Pixmap(N_COLUMNS, N_ROWS);
+
 PixmapEditor editor;
 PixmapTool tool;
+
+PenTool penTool;
+TextTool textTool;
+
+ControlP5 cp5;
+RadioButton toolButtons;
 
 void setup() {
   size(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -26,6 +39,26 @@ void setup() {
   cp5 =  new ControlP5(this);
 
   editor = new PixmapEditor((width-EDITOR_WIDTH)/2, EDITOR_PADDING, EDITOR_WIDTH, EDITOR_HEIGHT, pixmap);
+
+  toolButtons = cp5.addRadioButton("chooseTool")
+                   .setPosition(EDITOR_PADDING, CONTROL_TOP)
+                   .setSize(BUTTON_SIZE, BUTTON_SIZE)
+                   .setColorForeground(color(120))
+                   .setColorActive(color(255))
+                   .setColorLabel(color(255))
+                   .setItemsPerRow(2)
+                   .setSpacingColumn(50)
+                   .addItem("pen",  TOOL_PEN)
+                   .addItem("text", TOOL_TEXT)
+                   ;
+
+  // Create tools.
+  penTool = new PenTool(editor);
+  textTool = new TextTool(editor, "29LTArapix-12.vlw");
+  
+  // Assign default tool.
+  toolButtons.activate(0);
+  tool = penTool;
 }
 
 void draw() {
@@ -34,6 +67,17 @@ void draw() {
   tool.display();
   textTool.setLTR(true);
 }
+
+void chooseTool(int id) {
+  if (id == TOOL_PEN) {
+    tool = penTool;
+  }
+  else if (id == TOOL_TEXT) {
+    tool = textTool;
+    textTool.reset();    
+  }
+}
+
 
 void mousePressed() {
   tool.mousePressed();
