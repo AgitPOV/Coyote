@@ -22,13 +22,17 @@ class Pixmap {
     this.nColumns = nColumns;
     this.nRows    = nRows;
     pixels = new int[nColumns * nRows];
-    for (int i=0; i<nPixels(); i++)
-      pixels[i] = OFF;
+    clear();
   }
   
   int nColumns() { return nColumns; }
   int nRows() { return nRows; }
   int nPixels() { return pixels.length; }
+  
+  void clear() {
+    for (int i=0; i<nPixels(); i++)
+      pixels[i] = OFF;    
+  }
   
   void set(int i, int val) {
     pixels[i] = val;    

@@ -59,9 +59,12 @@ void setup() {
   // Controllers.
   cp5 =  new ControlP5(this);
   
+  int controlX = EDITOR_PADDING;
+  int controlY = CONTROL_TOP;
+  
   // Tools.
   toolButtons = cp5.addRadioButton("chooseTool")
-                   .setPosition(EDITOR_PADDING, CONTROL_TOP)
+                   .setPosition(controlX, controlY)
                    .setSize(BUTTON_SIZE, BUTTON_SIZE)
                    .setColorForeground(color(120))
                    .setColorActive(color(255))
@@ -74,7 +77,7 @@ void setup() {
   
   // Toggle for LTR/RTL.
   cp5.addToggle("toggleLTR")
-     .setPosition(EDITOR_PADDING + 5*BUTTON_SIZE, CONTROL_TOP)
+     .setPosition(controlX += 5*BUTTON_SIZE, controlY)
      .setSize(BUTTON_SIZE, BUTTON_SIZE/2)
      .setValue(true)
      .setMode(ControlP5.SWITCH)
@@ -83,7 +86,7 @@ void setup() {
   
   // Drop-down list for fonts.
   fontDropdownList = cp5.addDropdownList("chooseFont")
-                        .setPosition(EDITOR_PADDING + 5*BUTTON_SIZE, CONTROL_TOP + 2*BUTTON_SIZE)
+                        .setPosition(controlX, controlY += 2*BUTTON_SIZE)
                         .setItemHeight(BUTTON_SIZE/2)
                         .setBarHeight(BUTTON_SIZE/2)
                         ;
@@ -92,15 +95,25 @@ void setup() {
   for (int i=0; i<fontNames.size(); i++) {
     fontDropdownList.addItem(fontNames.get(i), i);
   }
+  
+  // Effects.
+  cp5.addBang("erase")
+     .setPosition(controlX += 4*BUTTON_SIZE, controlY = CONTROL_TOP)
+     .setSize(BUTTON_SIZE, BUTTON_SIZE);
+
+  cp5.addBang("invert")
+     .setPosition(controlX += 2*BUTTON_SIZE, controlY)
+     .setSize(BUTTON_SIZE, BUTTON_SIZE);
 
   // Add export buttons.
   cp5.addButton("exportToArduino")
      .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*3, CONTROL_TOP)
-     .setLabel("-> Arduino")     ;
+     .setLabel("-> Arduino");
   
   cp5.addButton("exportToPureData")
      .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*3, CONTROL_TOP + BUTTON_SIZE)
-     .setLabel("-> PureData")     ;
+     .setLabel("-> PureData");
+     
 
   // Assign default tool.
   toolButtons.activate(0);
@@ -128,6 +141,14 @@ void toggleLTR(boolean ltr) {
   textTool.setLTR(ltr);
 }
 
+void erase() {
+  pixmap.clear();
+}
+
+void invert() {
+  for (int i=0; i<pixmap.nPixels(); i++)
+    pixmap.toggle(i);
+}
 
 void exportToArduino() {
   /*
