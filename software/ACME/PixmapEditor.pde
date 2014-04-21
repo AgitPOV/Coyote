@@ -9,7 +9,7 @@ class PixmapEditor {
 
   float colSize;
   float rowSize;
-  int border = 20;
+  int border = 0;
 
   PixmapEditor(int x, int y, int w, int h, Pixmap pixmap) {
     editorX = x;
@@ -26,10 +26,16 @@ class PixmapEditor {
     return pixmap;
   }
   
+  // Coordinate systems conversions.
+  
   float columnToX(int col) {
     return editorX + col*colSize + border;
   }
   
+  float rowToY(int row) {
+    return editorY + row*rowSize + border;    
+  }
+
   int xToColumn(float x) {
     return floor( (x - border - editorX) / colSize );
   }
@@ -44,16 +50,11 @@ class PixmapEditor {
   int getWidth() { return editorWidth-2*border; }
   int getHeight() { return editorHeight-2*border; }
   
-  float rowToY(int row) {
-    return editorY + row*rowSize + border;    
-  }
-
   void display() {
     textAlign(CENTER, CENTER);
-    background(130, 101, 1);
 
     // Grid
-    stroke(0);
+    stroke(255);
 
     for (int i = 0; i < pixmap.nColumns()+1; i++) {
       float x = columnToX(i);
@@ -69,11 +70,11 @@ class PixmapEditor {
     //line(border, editorHeight-1-border, editorWidth-1-border, editorHeight-1-border);
 
     // Text
-    fill(255);
-    for (int r = 0; r < pixmap.nRows(); r++)
-      text(r, border/2, (r+0.5)*rowSize+border);
-    for (int c = 0; c < pixmap.nColumns(); c++)
-      text(c, (c+0.5)*colSize+border, border/2);
+//    fill(255);
+//    for (int r = 0; r < pixmap.nRows(); r++)
+//      text(r, border/2, (r+0.5)*rowSize+border);
+//    for (int c = 0; c < pixmap.nColumns(); c++)
+//      text(c, (c+0.5)*colSize+border, border/2);
 
     // Squares
     fill(233, 217, 184);
