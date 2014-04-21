@@ -2,16 +2,16 @@ class TextTool extends PixmapTool {
 
   // Currently loaded font.
   PFont font;
-  
+
   // Left-to-right (vs right-to-left).
   boolean ltr;
 
   // The starting position of the cursor (in column coordinates).
   int cursorStartColumn;
-  
+
   // Cursor index (in letter space).
   int cursorIndex;
-  
+
   // The current string.
   String text;
   Pixmap textPixmap;
@@ -24,10 +24,9 @@ class TextTool extends PixmapTool {
   }
 
   void setFont(String fontName) {
-//    font = createFont("Arial", 12);
     font = loadFont(fontName);
   }
-  
+
   void setLTR(boolean ltr) {
     this.ltr = ltr;
   }
@@ -36,14 +35,14 @@ class TextTool extends PixmapTool {
     // The cursor itself (blinking).
     boolean on = (millis() % 1000 < 500);
     if (hasCursor() && on) {
-      _drawCursor( cursorStartColumn, color(0, 255, 0, 128));
-      _drawCursor( cursorColumn(), color(255, 0, 0, 128));
+//      _drawCursor( cursorStartColumn, color(0, 255, 0, 128));
+      _drawCursor( cursorColumn(),    color(255, 0, 0, 128));
     }
 
     // Move the cursor around the screen.
     int idx = editor.mouseOver();
     if (idx != PixmapEditor.OUT_OF_BOUNDS) {
-      _drawCursor( editor.getPixmap().column(idx), color(255, 0, 0, 128));
+      _drawCursor( editor.getPixmap().column(idx), color(255, 0, 0, 64));
     }
   }
 
@@ -64,15 +63,15 @@ class TextTool extends PixmapTool {
           // Erase everything.
           for (int i=0; i<textPixmap.nPixels(); i++)
             textPixmap.set(i, Pixmap.OFF);
-          
+
           _stamp(textPixmap);
-          
+
           // Reduce cursor index.
           cursorIndex = max(cursorIndex-1, 0);
-          
+
           // Remove letter from text.
           text = text.substring(0, cursorIndex) + text.substring(cursorIndex+1);
-          
+
           // Regenerate pixmap and print it.
           textPixmap = _pixmapFromText(text);
           _stamp(textPixmap);
@@ -104,8 +103,7 @@ class TextTool extends PixmapTool {
   PImage stringToImage(String text, int fontSize, PFont font, boolean ltr) {
     if (text.isEmpty())
       return null;
-    
-    println(":"+text+":");
+
     // Need to call this iot make textWidth effective.
     textFont(font, fontSize);
 
@@ -161,11 +159,11 @@ class TextTool extends PixmapTool {
     fill(fillColor);
     rect(editor.columnToX(column), editor.rowToY(0), editor.getColumnSize(), editor.getHeight());
   }
-  
+
   Pixmap _pixmapFromText(String text) {
     if (text.isEmpty())
       return null;
-      
+
     // Create pixmap.
     return new Pixmap(stringToImage(text, N_ROWS, font, ltr));
   }
@@ -173,7 +171,7 @@ class TextTool extends PixmapTool {
   void _stamp(Pixmap pix) {
     if (pix == null)
       return;
-      
+
     // Stamp typed letter.
     editor.getPixmap().stamp(ltr ? cursorStartColumn : cursorStartColumn - pix.nColumns() + 1, 0, pix);
   }
