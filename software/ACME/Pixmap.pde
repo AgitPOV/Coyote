@@ -76,6 +76,6 @@ class Pixmap {
   }
   
   int row(int index) {
-    return index / nRows;
+    return index / nColumns;
   }
 }
