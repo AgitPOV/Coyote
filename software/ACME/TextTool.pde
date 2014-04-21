@@ -60,7 +60,7 @@ class TextTool extends PixmapTool {
   void keyTyped() {
     if (key != CODED && hasCursor()) {
       if (key == BACKSPACE) {
-        if (textPixmap != null) {
+        if (textPixmap != null && cursorIndex > 0) {
           // Erase everything.
           for (int i=0; i<textPixmap.nPixels(); i++)
             textPixmap.set(i, Pixmap.OFF);
