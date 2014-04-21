@@ -135,9 +135,11 @@ class TextTool extends PixmapTool {
   int cursorColumn() {
     int column = cursorStartColumn;
 
-    int substringLength = (ltr ? cursorIndex : text.length() - cursorIndex);
-    if (substringLength > 0) {
-      Pixmap pix = new Pixmap(stringToImage(text.substring(0, substringLength), FONT_SIZE, font, ltr));
+    int subStringLength = (ltr ? cursorIndex : text.length() - cursorIndex);
+    
+    if (subStringLength > 0) {
+      String subString = (ltr ? text : new StringBuffer(text).reverse().toString()).substring(0, subStringLength);
+      Pixmap pix = new Pixmap(stringToImage(subString, FONT_SIZE, font, ltr));
       column += (ltr ? +1 : -1) * pix.nColumns();
     }
 
