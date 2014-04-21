@@ -90,6 +90,15 @@ class TextTool extends PixmapTool {
   }
 
   void keyPressed() {
+    if (keyCode == LEFT) {
+      cursorIndex = max(cursorIndex-1, 0);
+    }
+    else if (keyCode == RIGHT) {
+      cursorIndex = min(cursorIndex+1, text.length());
+    }
+    else if (keyCode == ENTER) {
+      reset();
+    }
   }
 
   PImage stringToImage(String text, int fontSize, PFont font, boolean ltr) {
