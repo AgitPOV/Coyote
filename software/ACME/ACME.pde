@@ -74,6 +74,14 @@ void setup() {
     fontDropdownList.addItem(fontNames.get(i), i);
   }
 
+  // Toggle for LTR/RTL.
+  cp5.addToggle("toggleLTR")
+     .setPosition(EDITOR_PADDING, CONTROL_TOP + 2*BUTTON_SIZE + EDITOR_PADDING)
+     .setSize(BUTTON_SIZE, BUTTON_SIZE/2)
+     .setValue(true)
+     .setMode(ControlP5.SWITCH)
+     ;
+  
   println(PFont.list());
   // Create tools.
   penTool = new PenTool(editor);
@@ -101,9 +109,15 @@ void chooseTool(int id) {
   }
 }
 
+void toggleLTR(boolean ltr) {
+  textTool.setLTR(ltr);
+}
+
 void controlEvent(ControlEvent event) {
-  if (event.getGroup() == fontDropdownList) {
-    textTool.setFont( fonts.get( fontNames.get( (int) event.getGroup().getValue() ) ) );
+  if (event.isGroup()) {
+    if (event.getGroup() == fontDropdownList) {
+      textTool.setFont( fonts.get( fontNames.get( (int) event.getGroup().getValue() ) ) );
+    }
   }
 }
 
