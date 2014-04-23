@@ -6,7 +6,10 @@ abstract class PixmapTool {
   
   PixmapTool(PixmapEditor editor) {
     this.editor = editor;
+    reset();
   }
+  
+  void reset() {}
   
   void display() {}
   

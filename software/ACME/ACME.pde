@@ -49,8 +49,16 @@ void setup() {
   // Fonts.
   fonts = new HashMap<String,PFont>();
   fontNames = new ArrayList<String>();
-  addFont("Arial",    createFont("Arial", FONT_SIZE));
-  addFont("Arapix",   loadFont("29LTArapix-12.vlw"));
+  addFont("Verdana",         loadFont("Verdana-12.vlw"));
+//  addFont("Arial",          createFont("Arial", FONT_SIZE));
+  addFont("Arapix",          loadFont("29LTArapix-12.vlw"));
+//  addFont("AlphaBeta", loadFont("AlphaBetaBRK-12.vlw"));
+//  addFont("BinaryX", loadFont("BinaryXCHRBRK-12.vlw"));
+  addFont("Fifteen Narrow",  loadFont("FifteenNarrow-12.vlw"));
+  addFont("Comic Sans",      loadFont("ComicSansMS-12.vlw"));
+  addFont("Comic Sans Bold", loadFont("ComicSansMS-Bold-12.vlw"));
+//  addFont("MSAM", loadFont("Msam10-12.vlw"));
+//  addFont("Dingbats", loadFont("Dingbats-12.vlw"));
 
   // Create tools.
   penTool = new PenTool(editor);
