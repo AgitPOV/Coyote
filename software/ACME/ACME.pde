@@ -20,6 +20,7 @@ static final int BUTTON_SIZE    = 40;
 
 static final int TOOL_PEN  = 1;
 static final int TOOL_TEXT = 2;
+static final int TOOL_MOVE = 3;
 
 ClipHelper clipboard = new ClipHelper();
 
@@ -28,8 +29,9 @@ Pixmap pixmap = new Pixmap(N_COLUMNS, N_ROWS);
 PixmapEditor editor;
 PixmapTool tool;
 
-PenTool penTool;
+PenTool  penTool;
 TextTool textTool;
+MoveTool moveTool;
 
 ControlP5 cp5;
 RadioButton toolButtons;
@@ -61,8 +63,9 @@ void setup() {
 //  addFont("Dingbats", loadFont("Dingbats-12.vlw"));
 
   // Create tools.
-  penTool = new PenTool(editor);
+  penTool  = new PenTool(editor);
   textTool = new TextTool(editor, fonts.get(fontNames.get(0)));
+  moveTool = new MoveTool(editor);
 
   // Controllers.
   cp5 =  new ControlP5(this);
@@ -78,9 +81,11 @@ void setup() {
                    .setColorActive(color(255))
                    .setColorLabel(color(255))
                    .setItemsPerRow(2)
-                   .setSpacingColumn(50)
+                   .setSpacingColumn(BUTTON_SIZE)
+                   .setSpacingRow(BUTTON_SIZE)
                    .addItem("text", TOOL_TEXT)
                    .addItem("pen",  TOOL_PEN)
+                   .addItem("move", TOOL_MOVE)
                    ;
   
   // Toggle for LTR/RTL.
@@ -148,13 +153,12 @@ void draw() {
 }
 
 void chooseTool(int id) {
-  if (id == TOOL_PEN) {
-    tool = penTool;
+  switch (id) {
+    case TOOL_PEN:  tool = penTool; break;
+    case TOOL_TEXT: tool = textTool; break;
+    case TOOL_MOVE: tool = moveTool; break;
   }
-  else if (id == TOOL_TEXT) {
-    tool = textTool;
-    textTool.reset();
-  }
+  tool.reset();
 }
 
 void toggleLTR(boolean ltr) {
@@ -227,6 +231,10 @@ void mouseReleased() {
 
 void keyTyped() {
   tool.keyTyped();
+}
+
+void mouseWheel(MouseEvent event) {
+  tool.mouseWheel(event.getAmount());
 }
 
 void keyPressed() {

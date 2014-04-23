@@ -42,6 +42,8 @@ abstract class PixmapTool {
     if (idx != PixmapEditor.OUT_OF_BOUNDS)
       mouseMovedAt(idx);
   }
+  
+  void mouseWheel(float amount) {}
 
   void keyTyped() {}
   void keyPressed() {}

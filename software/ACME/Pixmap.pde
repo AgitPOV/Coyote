@@ -8,20 +8,27 @@ class Pixmap {
   static final int OFF = 0;
   
   Pixmap(PImage img) {
-    nColumns = img.width;
-    nRows    = img.height;
-    img.filter(THRESHOLD);
-    img.loadPixels();
-    pixels = new int[nColumns * nRows];
-    for (int i=0; i<nPixels(); i++) {
-      pixels[i] = ( img.pixels[i] == color(0) ? OFF : ON );
+    if (img == null) {
+      _init(0, 0);
+    }
+    else {
+      _init(img.width, img.height);
+      img.filter(THRESHOLD);
+      img.loadPixels();
+      for (int i=0; i<nPixels(); i++) {
+        pixels[i] = ( img.pixels[i] == color(0) ? OFF : ON );
+      }
     }
   }
   
+  Pixmap(Pixmap copy) {
+    _init(copy.nColumns(), copy.nRows());
+    for (int i=0; i<nPixels(); i++)
+      set(i, copy.get(i));
+  }
+  
   Pixmap(int nColumns, int nRows) {
-    this.nColumns = nColumns;
-    this.nRows    = nRows;
-    pixels = new int[nColumns * nRows];
+    _init(nColumns, nRows);
     clear();
   }
   
@@ -71,15 +78,27 @@ class Pixmap {
     }
   }
   
-  int _indexOf(int x, int y) {
-    return y*nColumns + x;
-  }
-  
   int column(int index) {
     return index % nColumns;
   }
   
   int row(int index) {
     return index / nColumns;
+  }
+  
+  void copyFrom(Pixmap pixmap) {
+    for (int i=0; i<nPixels(); i++) {
+      set(i, pixmap.get(i));
+    }
+  }
+  
+  int _indexOf(int x, int y) {
+    return y*nColumns + x;
+  }
+  
+  void _init(int nColumns, int nRows) {
+    this.nColumns = nColumns;
+    this.nRows    = nRows;
+    pixels = new int[nColumns * nRows];
   }
 }
