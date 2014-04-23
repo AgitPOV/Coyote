@@ -33,6 +33,13 @@ class TextTool extends PixmapTool {
     reset();
   }
 
+  void reset() {
+    cursorStartColumn = DEFAULT;
+    cursorIndex = 0;
+    text = "";
+    textPixmap = null;
+  }
+
   void display() {
     // The cursor itself (blinking).
     boolean on = (millis() % 1000 < 500);
@@ -153,13 +160,6 @@ class TextTool extends PixmapTool {
   void setCursor(int column) {
     reset();
     cursorStartColumn = column;
-  }
-
-  void reset() {
-    cursorStartColumn = DEFAULT;
-    cursorIndex = 0;
-    text = "";
-    textPixmap = null;
   }
 
   void _drawCursor(int column, color fillColor) {
