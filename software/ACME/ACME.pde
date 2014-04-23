@@ -122,6 +122,18 @@ void setup() {
      .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*3, CONTROL_TOP + BUTTON_SIZE)
      .setLabel("-> PureData");
      
+     
+  // Console.
+  Textarea console = cp5.addTextarea("txt")
+                        .setPosition(width/2 - EDITOR_PADDING, height - 2*BUTTON_SIZE - EDITOR_PADDING)
+                        .setSize(width/2, 2*BUTTON_SIZE)
+                        .setFont(createFont("", 10))
+                        .setLineHeight(14)
+                        .setColor(color(200))
+                        .setColorBackground(color(0, 100))
+                        .setColorForeground(color(255, 100));
+  ;
+  cp5.addConsole(console);
 
   // Assign default tool.
   toolButtons.activate(0);
@@ -159,10 +171,6 @@ void invert() {
 }
 
 void exportToArduino() {
-  /*
-  prog_int16_t povArray[] PROGMEM
-   
-   */
   String code = "#define POVARRAYSIZE "+N_COLUMNS+"\rint povArray[] = { "; 
   for ( int c =0 ; c <  N_COLUMNS ; c++ ) {
     int compresssedRow = 0;
@@ -175,6 +183,7 @@ void exportToArduino() {
   }
   code = code + "};\r";
   clipboard.copyString(code);
+  println("Arduino code copied to clipboard.");
 }
 
 void exportToPureData() {
@@ -189,6 +198,7 @@ void exportToPureData() {
     if ( c != N_COLUMNS - 1 ) code = code + " ";
   }
   clipboard.copyString(code);
+  println("PureData code copied to clipboard.");
 }
 
 void controlEvent(ControlEvent event) {
