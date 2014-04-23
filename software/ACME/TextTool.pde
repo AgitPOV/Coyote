@@ -105,12 +105,16 @@ class TextTool extends PixmapTool {
   PImage stringToImage(String text, int fontSize, PFont font, boolean ltr) {
     if (text.isEmpty())
       return null;
+      
+    int w = ceil(textWidth(text));
+    if (w == 0)
+      return null;
 
     // Need to call this iot make textWidth effective.
     textFont(font, fontSize);
 
     // Create graphics to hold text.
-    PGraphics pg = createGraphics(ceil(textWidth(text)), fontSize);
+    PGraphics pg = createGraphics(w, fontSize);
     //println(pg.width + " " + pg.height);
     pg.beginDraw();
     pg.background(0);
