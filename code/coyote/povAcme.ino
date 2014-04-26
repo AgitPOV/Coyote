@@ -32,6 +32,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* DEFINES
+=========================== */
+// #define COYOTE_SLOW_DEBUG
+
+
+
+
 volatile boolean povDoIt = false;
 
 
@@ -93,11 +100,10 @@ void povDisplay() {
 
 void povDisplayCheck() {
 
-  // Wait for hall then display
+  // Display if triggered
   if ( povDoIt )  {
 
-    povIntervalColumns = povInterval  * 30 / 10 ; //povIntervalColumns = interval / 10 * 33 ;
-
+    povIntervalColumns = povInterval  * 6 ; //povIntervalColumns = interval / 10 * 33 ;
 
     povIntervalColumns = min(povIntervalColumns,6600);
     // povIntervalLetters = min(povIntervalLetters,9000);
