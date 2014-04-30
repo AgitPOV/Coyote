@@ -1,3 +1,9 @@
+#define COYOTE_NORMAL_BIKE 6
+#define COYOTE_SMALL_BIKE  6
+
+// #define COYOTE_SLOW_DEBUG
+#define COYOTE_BIKE_TYPE COYOTE_NORMAL_BIKE
+
 
 /*
  $$$$$$\   $$$$$$\  $$$$$$\ $$$$$$$$\       $$$$$$$\   $$$$$$\  $$\    $$\         $$$$$$\   $$$$$$\ $$\     $$\  $$$$$$\ $$$$$$$$\ $$$$$$$$\ 
@@ -8,6 +14,7 @@
  $$ |  $$ |$$ |  $$ |  $$ |     $$ |         $$ |      $$ |  $$ |  \$$$  /         $$ |  $$\ $$ |  $$ |   $$ |    $$ |  $$ |  $$ |   $$ |      
  $$ |  $$ |\$$$$$$  |$$$$$$\    $$ |         $$ |$$\    $$$$$$  |$$\\$  /$$\       \$$$$$$  | $$$$$$  |   $$ |     $$$$$$  |  $$ |   $$$$$$$$\ 
  \__|  \__| \______/ \______|   \__|         \__|\__|   \______/ \__|\_/ \__|       \______/  \______/    \__|     \______/   \__|   \________|
+ 
  */
 
 
@@ -41,8 +48,10 @@ int povArray[] = { 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0
  PORT B MASK : 0x07 B00000111
  PORT C MASK : 0x3F B00111111
  
- .     ATMEGA168     PIN  INTERRUPT
- HALL  PD3           3    1
+
+ ARDUINO 
+ ATMEGA168     PIN  INTERRUPT
+ HALL   PD3           3    1
  
  */
 unsigned char ledPins[]={
@@ -50,8 +59,8 @@ unsigned char ledPins[]={
 
 #define HALL_INTERRUPT 1
 #define HALL_PIN 3
-
-
+  
+#define WHEEL_RADIUS_FACTOR COYOTE_BIKE_TYPE
 
 void setup() {                
 
@@ -95,10 +104,9 @@ void setup() {
   // ====================================
 void loop() {
 
-  povDisplayCheck(); // Check if the hall triggers the display
-  // povDisplay(); // Continuous
-}
+  povDisplayCheck();
 
+}
 
 
 

@@ -103,7 +103,8 @@ void povDisplayCheck() {
   // Display if triggered
   if ( povDoIt )  {
 
-    povIntervalColumns = povInterval  * 6 ; //povIntervalColumns = interval / 10 * 33 ;
+    povIntervalColumns = povInterval  * WHEEL_RADIUS_FACTOR ; //povIntervalColumns = interval / 10 * 33 ;
+
 
     povIntervalColumns = min(povIntervalColumns,6600);
     // povIntervalLetters = min(povIntervalLetters,9000);
