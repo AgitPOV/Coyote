@@ -96,7 +96,7 @@ void povDisplayCheck() {
   // Wait for hall then display
   if ( povDoIt )  {
 
-    povIntervalColumns = povInterval  * 30 / 10 ; //povIntervalColumns = interval / 10 * 33 ;
+    povIntervalColumns = povInterval  * WHEEL_RADIUS_FACTOR ; //povIntervalColumns = interval / 10 * 33 ;
 
 
     povIntervalColumns = min(povIntervalColumns,6600);

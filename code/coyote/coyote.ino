@@ -1,4 +1,8 @@
-#define COYOTE_SLOW_DEBUG
+#define COYOTE_NORMAL_BIKE 6
+#define COYOTE_SMALL_BIKE  6
+
+// #define COYOTE_SLOW_DEBUG
+#define COYOTE_BIKE_TYPE COYOTE_NORMAL_BIKE
 
 
 /*
@@ -47,6 +51,8 @@ unsigned char ledPins[]={9,10,7,8,A0,A4,A5,A3,A2,A1,1,0};
 
 #define HALL_INTERRUPT 1
 #define HALL_PIN 3
+  
+#define WHEEL_RADIUS_FACTOR COYOTE_BIKE_TYPE
 
 #define POVARRAYSIZE 49
 int povArray[] = { 2048 , 3072 , 1536 , 512 , 512 , 256 , 256 , 256 , 128 , 0 , 64 , 64 , 0 , 32 , 48 , 16 , 24 , 8 , 4 , 4 , 6 , 2 , 1 , 1 , 1 , 0 , 1 , 1 , 2 , 2 , 2 , 2 , 0 , 4 , 8 , 8 , 0 , 16 , 32 , 32 , 64 , 64 , 128 , 384 , 768 , 512 , 1536 , 1024 , 2048};
