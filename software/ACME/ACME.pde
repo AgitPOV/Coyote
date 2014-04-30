@@ -51,12 +51,13 @@ void setup() {
   // Fonts.
   fonts = new HashMap<String,PFont>();
   fontNames = new ArrayList<String>();
-  addFont("Verdana",         loadFont("Verdana-12.vlw"));
-//  addFont("Arial",          createFont("Arial", FONT_SIZE));
+//  addFont("Verdana",         loadFont("Verdana-12.vlw"));
+  addFont("Verdana",          createFont("Verdana", FONT_SIZE));
+  addFont("Arial",          createFont("Arial", FONT_SIZE));
   addFont("Arapix",          loadFont("29LTArapix-12.vlw"));
-//  addFont("AlphaBeta", loadFont("AlphaBetaBRK-12.vlw"));
+  addFont("AlphaBeta", createFont("AlphaBetaBRK", FONT_SIZE));
 //  addFont("BinaryX", loadFont("BinaryXCHRBRK-12.vlw"));
-  addFont("Fifteen Narrow",  loadFont("FifteenNarrow-12.vlw"));
+  addFont("Fifteen Narrow",  createFont("FifteenNarrow", FONT_SIZE));//loadFont("FifteenNarrow-12.vlw"));
   addFont("Comic Sans",      loadFont("ComicSansMS-12.vlw"));
   addFont("Comic Sans Bold", loadFont("ComicSansMS-Bold-12.vlw"));
 //  addFont("MSAM", loadFont("Msam10-12.vlw"));
