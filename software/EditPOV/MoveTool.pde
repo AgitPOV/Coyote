@@ -20,7 +20,7 @@ class MoveTool extends PixmapTool {
   void display() {
     int idx = editor.mouseOver();
     if (idx != PixmapEditor.OUT_OF_BOUNDS || currentCol != DEFAULT) {
-      fill(color(255, 0, 0, 128));
+      fill(COLOR_EDITOR_TOOL);
       int column = (currentCol == DEFAULT ? editor.getPixmap().column(idx) : currentCol);
       int row = editor.getPixmap().nRows()/2;
       rect(editor.columnToX(column), editor.rowToY(row-1), editor.getColumnSize(), 3*editor.getRowSize());

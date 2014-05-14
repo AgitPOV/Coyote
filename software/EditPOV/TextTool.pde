@@ -45,13 +45,13 @@ class TextTool extends PixmapTool {
     boolean on = (millis() % 1000 < 500);
     if (hasCursor() && on) {
 //      _drawCursor( cursorStartColumn, color(0, 255, 0, 128));
-      _drawCursor( cursorColumn(),    color(255, 0, 0, 128));
+      _drawCursor( cursorColumn(),    COLOR_EDITOR_TOOL);
     }
 
     // Move the cursor around the screen.
     int idx = editor.mouseOver();
     if (idx != PixmapEditor.OUT_OF_BOUNDS) {
-      _drawCursor( editor.getPixmap().column(idx), color(255, 0, 0, 64));
+      _drawCursor( editor.getPixmap().column(idx), COLOR_EDITOR_TEXT_CURSOR);
     }
   }
 

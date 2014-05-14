@@ -1,8 +1,13 @@
 import controlP5.*;
 import java.util.Map;
 
-static final int BACKGROUND = #777CAF;
-
+// Colors.
+static final int COLOR_BACKGROUND    = #444444;
+static final int COLOR_EDITOR_ON     = #dd0000;
+static final int COLOR_EDITOR_OFF    = #333333;
+static final int COLOR_EDITOR_STROKE = #111111;
+final int COLOR_EDITOR_TOOL   = color(255, 0, 0, 128);
+final int COLOR_EDITOR_TEXT_CURSOR = color(255, 0, 0, 64);
 static final int N_COLUMNS = 200;
 static final int N_ROWS    = 12;
 static final int FONT_SIZE = N_ROWS;
@@ -148,7 +153,7 @@ void setup() {
 }
 
 void draw() {
-  background(BACKGROUND);
+  background(COLOR_BACKGROUND);
   editor.display();
   tool.display();
 }

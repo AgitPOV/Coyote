@@ -51,10 +51,13 @@ class PixmapEditor {
   int getHeight() { return editorHeight-2*border; }
   
   void display() {
-    textAlign(CENTER, CENTER);
+    // Draw editor background.
+    fill(COLOR_EDITOR_OFF);
+    rect(editorX, editorY, getWidth(), getHeight());
 
-    // Grid
-    stroke(255);
+    // Draw grid.
+    strokeWeight(0.5);
+    stroke(COLOR_EDITOR_STROKE);
 
     for (int i = 0; i < pixmap.nColumns()+1; i++) {
       float x = columnToX(i);
@@ -76,8 +79,8 @@ class PixmapEditor {
 //    for (int c = 0; c < pixmap.nColumns(); c++)
 //      text(c, (c+0.5)*colSize+border, border/2);
 
-    // Squares
-    fill(233, 217, 184);
+    // Draw pixels.
+    fill(COLOR_EDITOR_ON);
     for (int r = 0; r < pixmap.nRows(); r++) {
       for (int c = 0; c < pixmap.nColumns(); c++) {
         if (pixmap.get(c, r) == Pixmap.ON) {

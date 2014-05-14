@@ -11,7 +11,7 @@ class PenTool extends PixmapTool {
   void display() {
     int idx = editor.mouseOver();
     if (idx != PixmapEditor.OUT_OF_BOUNDS) {
-      fill(color(255, 0, 0, 128));
+      fill(COLOR_EDITOR_TOOL);
       int column = editor.getPixmap().column(idx);
       int row = editor.getPixmap().row(idx);
       
