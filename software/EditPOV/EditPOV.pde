@@ -42,7 +42,7 @@ ControlP5 cp5;
 RadioButton toolButtons;
 DropdownList fontDropdownList;
 
-HashMap<String,PFont> fonts;
+HashMap<String,FontData> fonts;
 ArrayList<String> fontNames;
 
 void setup() {
@@ -54,23 +54,20 @@ void setup() {
   editor = new PixmapEditor((width-EDITOR_WIDTH)/2, EDITOR_PADDING, EDITOR_WIDTH, EDITOR_HEIGHT, pixmap);
 
   // Fonts.
-  fonts = new HashMap<String,PFont>();
+  fonts = new HashMap<String,FontData>();
   fontNames = new ArrayList<String>();
-//  addFont("Verdana",         loadFont("Verdana-12.vlw"));
-  addFont("Verdana",          createFont("Verdana", FONT_SIZE));
-  addFont("Arial",          createFont("Arial", FONT_SIZE));
-  addFont("Arapix",          loadFont("29LTArapix-12.vlw"));
-  addFont("AlphaBeta", createFont("AlphaBetaBRK", FONT_SIZE));
-//  addFont("BinaryX", loadFont("BinaryXCHRBRK-12.vlw"));
-  addFont("Fifteen Narrow",  createFont("FifteenNarrow", FONT_SIZE));//loadFont("FifteenNarrow-12.vlw"));
-  addFont("Comic Sans",      loadFont("ComicSansMS-12.vlw"));
-  addFont("Comic Sans Bold", loadFont("ComicSansMS-Bold-12.vlw"));
-//  addFont("MSAM", loadFont("Msam10-12.vlw"));
-//  addFont("Dingbats", loadFont("Dingbats-12.vlw"));
+  addFont("Verdana",         createFont("Verdana", FONT_SIZE),       -2);
+  addFont("Arial",           createFont("Arial", FONT_SIZE),         -2);
+  addFont("Arapix",          loadFont("29LTArapix-12.vlw"),          +2);
+  addFont("AlphaBeta",       createFont("AlphaBetaBRK", FONT_SIZE),  -2);
+  addFont("Fifteen Narrow",  createFont("FifteenNarrow", FONT_SIZE), -2);
+  addFont("Comic Sans",      loadFont("ComicSansMS-12.vlw"),         +2);
+  addFont("Comic Sans Bold", loadFont("ComicSansMS-Bold-12.vlw"),    +2);
 
   // Create tools.
   penTool  = new PenTool(editor);
-  textTool = new TextTool(editor, fonts.get(fontNames.get(0)));
+  FontData baseFont = fonts.get(fontNames.get(0));
+  textTool = new TextTool(editor, baseFont.font, baseFont.offset);
   moveTool = new MoveTool(editor);
 
   // Controllers.
@@ -214,7 +211,9 @@ void exportToPureData() {
 void controlEvent(ControlEvent event) {
   if (event.isGroup()) {
     if (event.getGroup() == fontDropdownList) {
-      textTool.setFont( fonts.get( fontNames.get( (int) event.getGroup().getValue() ) ) );
+      FontData fontData = fonts.get( fontNames.get( (int) event.getGroup().getValue() ) );
+      textTool.setFont( fontData.font );
+      textTool.setOffset( fontData.offset );
     }
   }
 }
@@ -256,9 +255,13 @@ void keyReleased() {
   tool.keyReleased();
 }
 
-void addFont(String name, PFont font) {
-  fonts.put(name, font);
+void addFont(String name, PFont font, int offset) {
+  fonts.put(name, new FontData(font, offset));
   fontNames.add(name);
+}
+
+void addFont(String name, PFont font) {
+  addFont(name, font, 0);
 }
 
 

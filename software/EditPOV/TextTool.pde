@@ -2,6 +2,9 @@ class TextTool extends PixmapTool {
 
   // Currently loaded font.
   PFont font;
+  
+  // The current font vertical offset (for adjustment purposes).
+  int offset;
 
   // Left-to-right (vs right-to-left).
   boolean ltr;
@@ -16,9 +19,10 @@ class TextTool extends PixmapTool {
   String text;
   Pixmap textPixmap;
 
-  TextTool(PixmapEditor editor, PFont font) {
+  TextTool(PixmapEditor editor, PFont font, int offset) {
     super(editor);
     setFont(font);
+    setOffset(offset);
     setLTR(true);
     reset();
   }
@@ -26,6 +30,10 @@ class TextTool extends PixmapTool {
   void setFont(PFont font) {
     this.font = font;
     reset();
+  }
+  
+  void setOffset(int offset) {
+    this.offset = offset;
   }
 
   void setLTR(boolean ltr) {
@@ -129,11 +137,11 @@ class TextTool extends PixmapTool {
     pg.textFont(font, fontSize);
     if (ltr) {
       pg.textAlign(LEFT, TOP);
-      pg.text(text, 0, 0);
+      pg.text(text, 0, offset);
     } 
     else {
       pg.textAlign(RIGHT, TOP);
-      pg.text(text, pg.width-1, 0);
+      pg.text(text, pg.width-1, offset);
     }
     pg.endDraw();
     return pg;
