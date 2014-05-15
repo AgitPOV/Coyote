@@ -184,12 +184,12 @@ void invert() {
 void exportToArduino() {
   String code = "#define POVARRAYSIZE "+N_COLUMNS+"\rint povArray[] = { "; 
   for ( int c =0 ; c <  N_COLUMNS ; c++ ) {
-    int compresssedRow = 0;
+    int compressedRow = 0;
     for ( int r =0 ; r < N_ROWS ; r++) {
-      compresssedRow = compresssedRow << 1;
-      compresssedRow = compresssedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
+      compressedRow = compressedRow << 1;
+      compressedRow = compressedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
     }
-    code = code + compresssedRow ;
+    code = code + compressedRow ;
     if ( c != N_COLUMNS - 1 ) code = code + " , ";
   }
   code = code + "};\r";
@@ -200,12 +200,12 @@ void exportToArduino() {
 void exportToPureData() {
   String code = ""; 
   for ( int c =0 ; c <  N_COLUMNS ; c++ ) {
-    int compresssedRow = 0;
+    int compressedRow = 0;
     for ( int r =0 ; r < N_ROWS ; r++) {
-      compresssedRow = compresssedRow << 1;
-      compresssedRow = compresssedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
+      compressedRow = compressedRow << 1;
+      compressedRow = compressedRow | (pixmap.get(c, r) == Pixmap.OFF ? Pixmap.OFF : Pixmap.ON);
     }
-    code = code + compresssedRow ;
+    code = code + compressedRow ;
     if ( c != N_COLUMNS - 1 ) code = code + " ";
   }
   clipboard.copyString(code);
