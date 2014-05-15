@@ -59,25 +59,41 @@ class BitmapTextPixmapFactory extends TextPixmapFactory {
   HashMap<Character, Pixmap> glyphs;
   
   // Constructor.
-  BitmapTextPixmapFactory(String fileName) {
+  BitmapTextPixmapFactory(String fileName, boolean imageFile) {
     glyphs = new HashMap<Character,Pixmap>();
     Table table = loadTable(fileName);
+    int k=0;
     for (TableRow row : table.rows()) {
       
       // Character.
       String str = row.getString(0);
       if (str.length() != 1)
-        continue; // skip
-      println("Read: " + str.charAt(0));
-      
+        continue;
       Character c = new Character(str.charAt(0));
       
-      // Corresponding image.
-      String imageFileName = row.getString(1);
-      PImage img = loadImage(imageFileName);
+      Pixmap pix;
+      if (imageFile) {
+        // Corresponding image.
+        String imageFileName = row.getString(1);
+        PImage img = loadImage(imageFileName);
+        pix = new Pixmap(img);
+      } else {
+        // XXX N_ROWS is hardcoded, might hamper backwards-compatibility
+        // XXX also: we add an extra empty (blank) column at the end of each letter
+        pix = new Pixmap(table.getColumnCount(), N_ROWS);
+        for (int i=1; i<table.getColumnCount(); i++) {
+          str = row.getString(i).trim();
+          int colBits = Integer.decode(str);
+          for (int j=0; j<N_ROWS; j++) {
+            pix.set(i-1, j, ( (colBits & 1) == 1 ? Pixmap.ON : Pixmap.OFF));
+            colBits >>= 1;
+          }
+        }
+      }
       
       // Add to glyphs.
-      glyphs.put(c, new Pixmap(img));
+      glyphs.put(c, pix);
+      k++;
     }
   }
   
@@ -115,3 +131,5 @@ class BitmapTextPixmapFactory extends TextPixmapFactory {
     return pix;
   }
 }
+
+

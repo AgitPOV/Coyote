@@ -59,7 +59,7 @@ void setup() {
   // Fonts.
   fonts = new HashMap<String,TextPixmapFactory>();
   fontNames = new ArrayList<String>();
-//  addBitmap("Test", "test_font.csv");
+  addBitmap("Keeling", "font_alex_keeling.csv", false);
   addFont("Verdana",         createFont("Verdana", FONT_SIZE),       -2);
   addFont("Arial",           createFont("Arial", FONT_SIZE),         -2);
   addFont("Arapix",          loadFont("29LTArapix-12.vlw"),          +2);
@@ -263,8 +263,8 @@ void addFont(String name, PFont font, int offset) {
   fontNames.add(name);
 }
 
-void addBitmap(String name, String fileName) {
-  fonts.put(name, new BitmapTextPixmapFactory(fileName));
+void addBitmap(String name, String fileName, boolean imageFile) {
+  fonts.put(name, new BitmapTextPixmapFactory(fileName, imageFile));
   fontNames.add(name);  
 }
 
