@@ -45,7 +45,7 @@ ControlP5 cp5;
 RadioButton toolButtons;
 DropdownList fontDropdownList;
 
-HashMap<String,FontData> fonts;
+HashMap<String,TextPixmapFactory> fonts;
 ArrayList<String> fontNames;
 
 void setup() {
@@ -57,8 +57,9 @@ void setup() {
   editor = new PixmapEditor((width-EDITOR_WIDTH)/2, EDITOR_PADDING, EDITOR_WIDTH, EDITOR_HEIGHT, pixmap);
 
   // Fonts.
-  fonts = new HashMap<String,FontData>();
+  fonts = new HashMap<String,TextPixmapFactory>();
   fontNames = new ArrayList<String>();
+//  addBitmap("Test", "test_font.csv");
   addFont("Verdana",         createFont("Verdana", FONT_SIZE),       -2);
   addFont("Arial",           createFont("Arial", FONT_SIZE),         -2);
   addFont("Arapix",          loadFont("29LTArapix-12.vlw"),          +2);
@@ -69,8 +70,8 @@ void setup() {
 
   // Create tools.
   penTool  = new PenTool(editor);
-  FontData baseFont = fonts.get(fontNames.get(0));
-  textTool = new TextTool(editor, baseFont.font, baseFont.offset);
+  TextPixmapFactory baseFont = fonts.get(fontNames.get(0));
+  textTool = new TextTool(editor, baseFont);
   moveTool = new MoveTool(editor);
 
   // Controllers.
@@ -214,9 +215,8 @@ void exportToPureData() {
 void controlEvent(ControlEvent event) {
   if (event.isGroup()) {
     if (event.getGroup() == fontDropdownList) {
-      FontData fontData = fonts.get( fontNames.get( (int) event.getGroup().getValue() ) );
-      textTool.setFont( fontData.font );
-      textTool.setOffset( fontData.offset );
+      TextPixmapFactory factory = fonts.get( fontNames.get( (int) event.getGroup().getValue() ) );
+      textTool.setTextFactory( factory );
     }
   }
 }
@@ -259,12 +259,12 @@ void keyReleased() {
 }
 
 void addFont(String name, PFont font, int offset) {
-  fonts.put(name, new FontData(font, offset));
+  fonts.put(name, new PFontTextPixmapFactory(font, offset, FONT_SIZE));
   fontNames.add(name);
 }
 
-void addFont(String name, PFont font) {
-  addFont(name, font, 0);
+void addBitmap(String name, String fileName) {
+  fonts.put(name, new BitmapTextPixmapFactory(fileName));
+  fontNames.add(name);  
 }
-
 

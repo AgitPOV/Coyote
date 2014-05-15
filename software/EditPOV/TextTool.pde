@@ -1,11 +1,8 @@
 class TextTool extends PixmapTool {
 
-  // Currently loaded font.
-  PFont font;
+  // Currently loaded text factory.
+  TextPixmapFactory textFactory;
   
-  // The current font vertical offset (for adjustment purposes).
-  int offset;
-
   // Left-to-right (vs right-to-left).
   boolean ltr;
 
@@ -19,23 +16,18 @@ class TextTool extends PixmapTool {
   String text;
   Pixmap textPixmap;
 
-  TextTool(PixmapEditor editor, PFont font, int offset) {
+  TextTool(PixmapEditor editor, TextPixmapFactory textFactory) {
     super(editor);
-    setFont(font);
-    setOffset(offset);
+    setTextFactory(textFactory);
     setLTR(true);
     reset();
   }
 
-  void setFont(PFont font) {
-    this.font = font;
+  void setTextFactory(TextPixmapFactory textFactory) {
+    this.textFactory = textFactory;
     reset();
   }
   
-  void setOffset(int offset) {
-    this.offset = offset;
-  }
-
   void setLTR(boolean ltr) {
     this.ltr = ltr;
     reset();
@@ -52,7 +44,6 @@ class TextTool extends PixmapTool {
     // The cursor itself (blinking).
     boolean on = (millis() % 1000 < 500);
     if (hasCursor() && on) {
-//      _drawCursor( cursorStartColumn, color(0, 255, 0, 128));
       _drawCursor( cursorColumn(),    COLOR_EDITOR_TOOL);
     }
 
@@ -117,51 +108,17 @@ class TextTool extends PixmapTool {
     }
   }
 
-  PImage stringToImage(String text, int fontSize, PFont font, boolean ltr) {
-    if (text.isEmpty())
-      return null;
-      
-    int w = ceil(textWidth(text));
-    if (w == 0)
-      return null;
-
-    // Need to call this iot make textWidth effective.
-    textFont(font, fontSize);
-
-    // Create graphics to hold text.
-    PGraphics pg = createGraphics(w, fontSize);
-    //println(pg.width + " " + pg.height);
-    pg.beginDraw();
-    pg.background(0);
-    pg.fill(255);
-    pg.textFont(font, fontSize);
-    if (ltr) {
-      pg.textAlign(LEFT, TOP);
-      pg.text(text, 0, offset);
-    } 
-    else {
-      pg.textAlign(RIGHT, TOP);
-      pg.text(text, pg.width-1, offset);
-    }
-    pg.endDraw();
-    return pg;
-  }
-
   boolean hasCursor() {
     return cursorStartColumn != DEFAULT;
   }
 
   int cursorColumn() {
     int column = cursorStartColumn;
-
-    int subStringLength = (ltr ? cursorIndex : text.length() - cursorIndex);
     
-    if (subStringLength > 0) {
-      String subString = (ltr ? text : new StringBuffer(text).reverse().toString()).substring(0, subStringLength);
-      Pixmap pix = new Pixmap(stringToImage(subString, FONT_SIZE, font, ltr));
+    Pixmap pix = _pixmapFromText(text);
+    if (pix != null)
       column += (ltr ? +1 : -1) * pix.nColumns();
-    }
-
+      
     return column;
   }
 
@@ -177,11 +134,7 @@ class TextTool extends PixmapTool {
   }
 
   Pixmap _pixmapFromText(String text) {
-    if (text.isEmpty())
-      return null;
-
-    // Create pixmap.
-    return new Pixmap(stringToImage(text, FONT_SIZE, font, ltr));
+    return textFactory.textToPixmap(text, ltr);
   }
 
   void _stamp(Pixmap pix) {
