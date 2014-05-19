@@ -30,6 +30,7 @@ static final int TOOL_PEN  = 1;
 static final int TOOL_TEXT = 2;
 static final int TOOL_MOVE = 3;
 
+
 ClipHelper clipboard = new ClipHelper();
 
 Pixmap pixmap = new Pixmap(N_COLUMNS, N_ROWS);
@@ -45,6 +46,11 @@ ControlP5 cp5;
 RadioButton toolButtons;
 DropdownList fontDropdownList;
 
+FileManager fileManager;
+ boolean saveRequested = false;
+ boolean openRequested = false;
+  
+  
 HashMap<String,TextPixmapFactory> fonts;
 ArrayList<String> fontNames;
 
@@ -73,6 +79,10 @@ void setup() {
   TextPixmapFactory baseFont = fonts.get(fontNames.get(0));
   textTool = new TextTool(editor, baseFont);
   moveTool = new MoveTool(editor);
+
+  // File Manager.
+  fileManager = new FileManager();
+
 
   // Controllers.
   cp5 =  new ControlP5(this);
@@ -116,6 +126,8 @@ void setup() {
     fontDropdownList.addItem(fontNames.get(i), i);
   }
   
+  
+  
   // Effects.
   cp5.addBang("erase")
      .setPosition(controlX += 4*BUTTON_SIZE, controlY = CONTROL_TOP)
@@ -123,6 +135,15 @@ void setup() {
 
   cp5.addBang("invert")
      .setPosition(controlX += 2*BUTTON_SIZE, controlY)
+     .setSize(BUTTON_SIZE, BUTTON_SIZE);
+     
+   // Save & Load
+   cp5.addBang("save")
+     .setPosition(controlX += 2*BUTTON_SIZE , controlY)
+     .setSize(BUTTON_SIZE, BUTTON_SIZE);
+     
+   cp5.addBang("open")
+     .setPosition(controlX += 2*BUTTON_SIZE , controlY)
      .setSize(BUTTON_SIZE, BUTTON_SIZE);
 
   // Add export buttons.
@@ -157,6 +178,16 @@ void draw() {
   background(COLOR_BACKGROUND);
   editor.display();
   tool.display();
+  
+  // STUPID CODE TO COUNTER A BUG BETWEEN THE FILEMANAGER FRAME AND CONTROLP5
+  if ( saveRequested ) {
+    fileManager.save(pixmap);
+    saveRequested = false;
+  }
+  if ( openRequested ) {
+    fileManager.open(pixmap);
+    openRequested = false;
+  }
 }
 
 void chooseTool(int id) {
@@ -180,6 +211,17 @@ void invert() {
   for (int i=0; i<pixmap.nPixels(); i++)
     pixmap.toggle(i);
 }
+
+void save() {
+  saveRequested = true;
+  
+}
+
+void open() {
+  openRequested = true;
+  
+}
+
 
 void exportToArduino() {
   String code = "#define POVARRAYSIZE "+N_COLUMNS+"\rint povArray[] = { "; 
