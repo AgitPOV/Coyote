@@ -48,7 +48,7 @@ void loopRadio() {
     network.read(header,&payload,sizeof(payload));
     
     for ( byte i =0 ; i < 13; i++ ){
-       povArray[i+payload.offset] = payload.array[i];
+       povArray[i+(payload.offset*13)] = payload.array[i];
     }
      
     povSetArray(povArray,payload.totalLength);
