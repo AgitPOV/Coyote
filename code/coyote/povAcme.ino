@@ -3,19 +3,20 @@
  * 12-LED POV for Arduino
  * Can display a led array
  * Thomas O Fredericks
- * (c) 2013
+ * (c) 2014
  
  VERSION
  ===========================
- 0.11 for COYOTE
+ 0.12:
+ Moved a lot of code to povAcme.ino.
+ Added an option for continuous display.
+ Added an option to set the column width.
  
- CHANGES
- ===========================
  0.11:
- Replaced povWaitAndDisplay with ipovDisplayCheck
+ Replaced povWaitAndDisplay with povDisplayCheck.
  
  0.1:
- Initial release
+ Initial release.
  
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,7 +35,37 @@
 
 /* DEFINES
 =========================== */
-// #define COYOTE_SLOW_DEBUG
+
+/*
+POV PIN CONFIGURTATION
+==========================
+LED ATMEGA168 ARDUINO PIN
+13 PD0 0
+12 PD1 1
+11 PC1 A1
+10 PC2 A2
+9 PC3 A3
+8 PC5 A5
+7 PC4 A4
+6 PC0 A0
+5 PB0 8
+4 PD7 7
+3 PB2 10
+2 PB1 9
+PORT D MASK : 0x83 B10000011
+PORT B MASK : 0x07 B00000111
+PORT C MASK : 0x3F B00111111
+
+ARDUINO
+ATMEGA168 PIN INTERRUPT
+HALL PD3 3 1
+*/
+unsigned char povLedPins[]={
+  9,10,7,8,A0,A4,A5,A3,A2,A1,1,0};
+
+#define HALL_INTERRUPT 1
+#define HALL_PIN 3
+
 
 
 
@@ -48,6 +79,7 @@ int _povArraySize;
 
 unsigned long povIntervalColumns = 3300;
 
+int _povColumnWidth = 6;
 
 volatile unsigned long povInterval = 1100;
 volatile unsigned long povTimeStamp;
@@ -58,8 +90,8 @@ void povSetup() {
 
   // Set up pin 0 - 12 as OUTPUT.
   for (unsigned char k=0;k<12;k++) {
-    pinMode(ledPins[k],OUTPUT);
-    //digitalWrite(ledPins[k],HIGH);
+    pinMode(povLedPins[k],OUTPUT);
+    //digitalWrite(povLedPins[k],HIGH);
   }
 
   // initialize HALL with interrupt
@@ -76,17 +108,62 @@ void povSetArray ( int* a, int s) {
   _povArraySize = s;
 }
 
+void povSetWidth(int w) {
+  
+  _povColumnWidth = w;
+}
 
-void povDisplay() { 
 
 
+  // TURN OFF ALL LEDS
+  // ====================================
+void povTurnOffAllLeds() { 
+  
+  for (unsigned char k=0;k<12;k++) {
+    digitalWrite(povLedPins[k],HIGH);
+  }
+  
+}
+
+  // 2s FADE OUT ANIMATION  
+  // ================================
+void povFadeOutAnimation() {
+  unsigned long timeStamp = millis();
+  unsigned long microTimeStamp = micros();
+  while ( (millis() - timeStamp) < 2000) {
+
+    unsigned long lapsed = (micros() - microTimeStamp); // 0-2000000 
+
+    unsigned long dim = lapsed / 200; // 0-10000
+    unsigned long frame = lapsed % 10000; //0-10000
+
+      if ( frame >= dim ) {
+      for ( int i=0; i < 12 ; i++ ) digitalWrite( povLedPins[i],  LOW ); //ON
+    } 
+    else {
+      for ( int i=0; i < 12 ; i++ ) digitalWrite( povLedPins[i],  HIGH ); //OFF
+    }
+  }  
+}
+
+
+void povDisplay(boolean wait) { 
+  
+  if ( wait ) {
+    if ( povDoIt == false ) return;
+  }
+  povDoIt = false;
+
+   povIntervalColumns = povInterval  * _povColumnWidth ; 
+   povIntervalColumns = min(povIntervalColumns,6600);
+  
   for (int i = _povArraySize-1; i>=0; i--)
   {
 
     int b = _povArray[i];
     //int b = pgm_read_word_near(_povArray + i);
     
-    for (int k=0; k<12; k++) digitalWrite(ledPins[k], bitRead(~b,k)); 
+    for (int k=0; k<12; k++) digitalWrite(povLedPins[k], bitRead(~b,k)); 
     #ifdef COYOTE_SLOW_DEBUG
       delay(100);
     #else
@@ -94,25 +171,11 @@ void povDisplay() {
     #endif
 
   }
-  for (int k=0; k<12; k++) digitalWrite(ledPins[k], 1);
+  for (int k=0; k<12; k++) digitalWrite(povLedPins[k], 1);
+  
 }
 
 
-void povDisplayCheck() {
-
-  // Display if triggered
-  if ( povDoIt )  {
-
-    povIntervalColumns = povInterval  * WHEEL_RADIUS_FACTOR ; //povIntervalColumns = interval / 10 * 33 ;
-
-
-    povIntervalColumns = min(povIntervalColumns,6600);
-    // povIntervalLetters = min(povIntervalLetters,9000);
-    povDisplay();   
-    povDoIt = false;
-  }
-
-}
 
 void hallInterrupt() {
 
