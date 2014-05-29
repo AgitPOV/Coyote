@@ -7,6 +7,9 @@
  
  VERSION
  ===========================
+ 0.13:
+ POV display should restart if retriggered
+ 
  0.12:
  Moved a lot of code to povAcme.ino.
  Added an option for continuous display.
@@ -35,6 +38,10 @@
 
 /* DEFINES
 =========================== */
+
+
+//#define COYOTE_SLOW_DEBUG
+
 
 /*
 POV PIN CONFIGURTATION
