@@ -21,7 +21,7 @@ static final int WINDOW_HEIGHT = 400;
 //static final int EDITOR_BORDER = 20;
 static final int EDITOR_WIDTH   = 1000;
 static final int EDITOR_HEIGHT  = EDITOR_WIDTH*N_ROWS/N_COLUMNS;
-static final int EDITOR_PADDING = 50;
+static final int EDITOR_PADDING = 10;
 static final int CONTROL_TOP    = 2*EDITOR_PADDING+EDITOR_HEIGHT;
 
 static final int BUTTON_SIZE    = 40;
@@ -53,6 +53,9 @@ FileManager fileManager;
   
 HashMap<String,TextPixmapFactory> fonts;
 ArrayList<String> fontNames;
+
+WheelDisplay wheelDisplay;
+
 
 void setup() {
   // Initialize sketch.
@@ -137,31 +140,35 @@ void setup() {
      .setPosition(controlX += 2*BUTTON_SIZE, controlY)
      .setSize(BUTTON_SIZE, BUTTON_SIZE);
      
-   // Save & Load
-   cp5.addBang("save")
-     .setPosition(controlX += 2*BUTTON_SIZE , controlY)
-     .setSize(BUTTON_SIZE, BUTTON_SIZE);
+ 
      
-   cp5.addBang("open")
-     .setPosition(controlX += 2*BUTTON_SIZE , controlY)
-     .setSize(BUTTON_SIZE, BUTTON_SIZE);
+
 
   // Add export buttons.
   cp5.addButton("exportToArduino")
-     .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*3, CONTROL_TOP)
-     .setLabel("-> Arduino");
+     .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*4, CONTROL_TOP)
+     .setSize(BUTTON_SIZE*4, BUTTON_SIZE/2)
+     .setLabel("Copy to Clipboard for Arduino");
   
   cp5.addButton("exportToPureData")
-     .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*3, CONTROL_TOP + BUTTON_SIZE)
-     .setLabel("-> PureData");
+     .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*4, CONTROL_TOP + BUTTON_SIZE/2 + 2)
+     .setSize(BUTTON_SIZE*4, BUTTON_SIZE/2)
+     .setLabel("Copy to Clipboard for Dataflow");
      
+   // Save & Load
+   cp5.addButton("save")
+     .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*4, CONTROL_TOP + BUTTON_SIZE + 4)
+     .setSize(BUTTON_SIZE*4, BUTTON_SIZE/2);  
+   
+    cp5.addButton("open")
+     .setPosition(width - EDITOR_PADDING - BUTTON_SIZE*4, CONTROL_TOP + BUTTON_SIZE + 6 + BUTTON_SIZE/2)
+     .setSize(BUTTON_SIZE*4, BUTTON_SIZE/2);  
      
   // Console.
   Textarea console = cp5.addTextarea("txt")
-                        .setPosition(width/2 - EDITOR_PADDING, height - 2*BUTTON_SIZE - EDITOR_PADDING)
-                        .setSize(width/2, 2*BUTTON_SIZE)
+                        .setPosition(EDITOR_PADDING, height -EDITOR_PADDING-BUTTON_SIZE)
+                        .setSize(width-2*EDITOR_PADDING, BUTTON_SIZE)
                         .setFont(createFont("", 10))
-                        .setLineHeight(14)
                         .setColor(color(200))
                         .setColorBackground(color(0, 100))
                         .setColorForeground(color(255, 100));
@@ -172,6 +179,9 @@ void setup() {
   toolButtons.activate(0);
   fontDropdownList.setIndex(0);
   tool = textTool;
+  
+  
+  wheelDisplay = new WheelDisplay();
 }
 
 void draw() {
@@ -192,6 +202,9 @@ void draw() {
     if (openRequested==0) selectInput("Select a file to open:", "fileSelectedForOpen");
     
   }
+  
+  
+  wheelDisplay.draw(pixmap,650,210,25, 100);
   
 
 }
@@ -271,7 +284,7 @@ void exportToPureData() {
     if ( c != N_COLUMNS - 1 ) code = code + " ";
   }
   clipboard.copyString(code);
-  println("PureData code copied to clipboard.");
+  println("Dataflow code copied to clipboard.");
 }
 
 void controlEvent(ControlEvent event) {
