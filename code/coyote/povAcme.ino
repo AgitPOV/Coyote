@@ -84,6 +84,8 @@ int _povColumnWidth = 6;
 volatile unsigned long povInterval = 1100;
 volatile unsigned long povTimeStamp;
 
+volatile int _povArrayIndex = 0;
+
 
 
 void povSetup() {
@@ -157,11 +159,9 @@ void povDisplay(boolean wait) {
    povIntervalColumns = povInterval  * _povColumnWidth ; 
    povIntervalColumns = min(povIntervalColumns,6600);
   
-  for (int i = _povArraySize-1; i>=0; i--)
-  {
-
-    int b = _povArray[i];
-    //int b = pgm_read_word_near(_povArray + i);
+  _povArrayIndex = _povArraySize-1;
+  while ( _povArrayIndex >= 0 ) {
+    int b = _povArray[_povArrayIndex];
     
     for (int k=0; k<12; k++) digitalWrite(povLedPins[k], bitRead(~b,k)); 
     #ifdef COYOTE_SLOW_DEBUG
@@ -169,9 +169,10 @@ void povDisplay(boolean wait) {
     #else
       delayMicroseconds(povIntervalColumns); //delayMicroseconds(POV_US_BETWEEN_COLUMNS);
     #endif
-
+    
+    _povArrayIndex--;
   }
-  for (int k=0; k<12; k++) digitalWrite(povLedPins[k], 1);
+
   
 }
 
@@ -180,6 +181,7 @@ void povDisplay(boolean wait) {
 void hallInterrupt() {
 
   povDoIt = true;
+  _povArrayIndex = _povArraySize-1;
   povInterval = max((millis() - povTimeStamp),2)-1;
   povTimeStamp = millis() ;
 
