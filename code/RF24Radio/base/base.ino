@@ -50,6 +50,9 @@ void setup() {
 
   Serial.begin(57600);
 
+  while (!Serial);
+  Serial.println("Serial started");
+
 #ifdef RADIO_ENABLED
   printf_begin();
 
@@ -57,7 +60,7 @@ void setup() {
   SPI.begin();
   radio.begin();
   radio.setRetries(15,15);
-  radio.setDataRate(RF24_2MBPS); 
+  //radio.setDataRate(RF24_2MBPS); 
 
 
   network.begin(90, 0);  // channel, node
@@ -82,15 +85,20 @@ void loop() {
     payload.totalLength = byteStream.in[3];
     for ( byte i = 0; i < 13;i++) {
       byte j = 4+(i*2);
-      payload.array[i] = byteStream.in[j] + (byteStream.in[j+1]<<8);
+      payload.array[i] = byteStream.in[j] | (byteStream.in[j+1]<<8);
 
     }
 
-    int id = byteStream.in[0] + (byteStream.in[1]<<8);
+    int id = byteStream.in[0] | (byteStream.in[1]<<8);
+    uint16_t idTest = byteStream.in[0] | (byteStream.in[1]<<8);
+    int idTest2 = byteStream.in[1];
+    idTest2 = idTest2 << 8;
+    idTest2 = idTest2 | byteStream.in[0];
 
     Serial.print("Radio: ");
 
-    Serial.println(id);
+    Serial.print(id);
+    Serial.println();
     Serial.print("Packet: ");
     Serial.print(payload.packetId);
     Serial.print(" Length: ");
@@ -102,7 +110,7 @@ void loop() {
     }
     Serial.println();
 #ifdef RADIO_ENABLED
-    RF24NetworkHeader header(/*to node*/ id);
+    RF24NetworkHeader header(/*to node*/ id, 'd');
     bool ok = network.write(header,&payload,sizeof(payload));
     if (ok)
       Serial.println("ok.");

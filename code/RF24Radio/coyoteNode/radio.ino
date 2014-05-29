@@ -26,8 +26,8 @@ void setupRadio() {
   
   SPI.begin();
   radio.begin();
-  radio.setRetries(5,5);
-  radio.setDataRate(RF24_2MBPS); 
+  radio.setRetries(15,15);
+  //radio.setDataRate(RF24_2MBPS); 
 
  
   network.begin(90, NODE_ID); // channel, node
