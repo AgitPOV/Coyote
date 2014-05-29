@@ -47,8 +47,8 @@ RadioButton toolButtons;
 DropdownList fontDropdownList;
 
 FileManager fileManager;
- boolean saveRequested = false;
- boolean openRequested = false;
+ int saveRequested = 0;
+ int openRequested = 0;
   
   
 HashMap<String,TextPixmapFactory> fonts;
@@ -179,15 +179,21 @@ void draw() {
   editor.display();
   tool.display();
   
-  // STUPID CODE TO COUNTER A BUG BETWEEN THE FILEMANAGER FRAME AND CONTROLP5
-  if ( saveRequested ) {
-    fileManager.save(pixmap);
-    saveRequested = false;
+  
+  // 2 FRAME WAIT BEFORE OPENING A DIALOG, OTHERWISE I GET SOME BUGS
+  if ( saveRequested > 0 ) {
+    saveRequested--;
+    if (saveRequested==0) selectOutput("Select a file to save to:", "fileSelectedForSave");
+    
   }
-  if ( openRequested ) {
-    fileManager.open(pixmap);
-    openRequested = false;
+  
+  if ( openRequested > 0 ) {
+    openRequested--;
+    if (openRequested==0) selectInput("Select a file to open:", "fileSelectedForOpen");
+    
   }
+  
+
 }
 
 void chooseTool(int id) {
@@ -213,13 +219,27 @@ void invert() {
 }
 
 void save() {
-  saveRequested = true;
-  
+   saveRequested = 2;
+   
+   
+}
+
+void fileSelectedForSave(File selection) {
+  if (selection != null) {
+    //println("User selected " + selection.getAbsolutePath());
+    fileManager.save(selection.getAbsolutePath(),pixmap);
+  }
 }
 
 void open() {
-  openRequested = true;
+  openRequested = 2;
   
+}
+
+void fileSelectedForOpen(File selection) {
+  if (selection != null) {
+    fileManager.open(selection.getAbsolutePath(),pixmap);
+  }
 }
 
 

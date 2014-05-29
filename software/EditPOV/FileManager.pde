@@ -2,19 +2,15 @@
 Class that manages load and save
  */
 
-import java.awt.*;
-
 
 class FileManager {
 
-  void open(Pixmap pixmap) {
+  void open(String fileName,Pixmap pixmap) {
     
-   
 
-    String fileName = openDialog("Save XML", FileDialog.LOAD);
 
     // Should add some error checking here, but I am lazy
-    if ( fileName != null ) {
+   
       XML xml = loadXML(fileName);
       XML root = xml.getChild("Pixmap");
 
@@ -35,20 +31,15 @@ class FileManager {
          }
          
       }
-    }
+    
   }
 
 
 
-  void save(Pixmap pixmap) {
+  void save(String fileName, Pixmap pixmap) {
     
-   
+    
 
-    String fileName = openDialog("Save XML", FileDialog.SAVE);
-
-
-
-    if ( fileName != null ) {
 
       if (fileName.length() > 4 ) {
         String extension = fileName.substring(fileName.length()-4);
@@ -83,18 +74,7 @@ class FileManager {
 
       println("Saved to "+fileName+".");
     }
-  }
+  
 
-  private String openDialog(String title, int mode) {
-
-    FileDialog fd = new FileDialog(new Frame(), title, FileDialog.LOAD);
-    fd.setFile("EditPOV.xml");
-    fd.setDirectory("");
-    fd.show();
-    String file = fd.getFile();
-    if ( file == null ) return null;
-
-    return fd.getDirectory()+fd.getFile();
-  }
 }
 
