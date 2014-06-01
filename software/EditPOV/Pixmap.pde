@@ -78,6 +78,22 @@ class Pixmap {
     }
   }
   
+  void stomp(int x, int y, Pixmap submap ) {
+     for (int xs=0; xs<submap.nColumns(); xs++) {
+      for (int ys=0; ys<submap.nRows(); ys++) {
+        int xc = x+xs;
+        int yc = y+ys;
+        if (0 <= xc && xc < nColumns() && 0 <= yc && yc < nRows()) {
+          if ( submap.get(xs, ys) == 1 )   set(xc, yc, 1);
+        
+        }
+      }
+    }
+    
+    
+  }
+  
+  
   int column(int index) {
     return index % nColumns;
   }

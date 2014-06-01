@@ -204,7 +204,7 @@ void draw() {
   }
   
   
-  wheelDisplay.draw(pixmap,650,210,25, 100);
+  wheelDisplay.draw(pixmap,650,210,100, 125);
   
 
 }

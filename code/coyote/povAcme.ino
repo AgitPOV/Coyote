@@ -180,6 +180,8 @@ void povDisplay(boolean wait) {
     _povArrayIndex--;
   }
 
+
+ povTurnOffAllLeds();
   
 }
 
